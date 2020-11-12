@@ -6,22 +6,22 @@ import { Flare } from '../flare'
  * Represents {@link Flare} that can be fully serialized by {@link JSON.stringify}
  * @see {Flare}
  */
-interface SerializableFlare {
-    name: string
+export interface SerializableFlare {
+    name:    string
     message: string
-    stack: string
+    stack:   string
     statusCode?: number
     statusText?: string
-    data?: object
+    data?:  object
     cause?: Nullable<SerializableFlare>
 }
 
 /**
- * Converts anything of {@link FlareSerializable} type
+ * Converts anything of {@link Nullable<Error>} type
  * to {@link SerializableFlare} that is plain object with all properties recursively enumerable
  * Result can be fully serialized with {@link JSON.stringify}
  */
-export function FlareSerializable (
+export function SerializableFlare (
     err?: Nullable<Error>
 ): Nullable<SerializableFlare> {
 
@@ -39,16 +39,16 @@ export function FlareSerializable (
             message,
             data,
             stack,
-            cause: FlareSerializable(cause as any)
+            cause: SerializableFlare(cause as any)
         }
     }
 
-    const { name, message, stack, cause } = err as Error & { cause?: Error }
+    const { name, message, stack, cause } = err as (Error & { cause?: Error })
 
     return {
         name,
         message,
         stack: stack ?? '',
-        cause: FlareSerializable(cause)
+        cause: SerializableFlare(cause)
     }
 }

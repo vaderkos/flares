@@ -1,81 +1,82 @@
 import { inherits } from 'util'
 
-import { Flare, Message, Data, Cause } from '../flare'
+import { Flare } from '../flare'
+import { Non, Nullable } from '../toolkit'
 
 export interface NewableScopedFlare<SC extends number, ST extends string> {
     new <
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null
-    > (cause?: C, data?: D, message?: M): Flare<SC, ST, M, D, C>
+        M extends string = '',
+        D extends object = {},
+        C extends Nullable<Error> = null
+    > (cause?: C, data?: Non<Error, D>, message?: M): Flare<SC, ST, M, D, C>
 
     new <
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null
-    > (cause?: C, message?: M, data?: D): Flare<SC, ST, M, D, C>
+        M extends string = '',
+        D extends object = {},
+        C extends Nullable<Error> = null
+    > (cause?: C, message?: M, data?: Non<Error, D>): Flare<SC, ST, M, D, C>
 
     new <
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null
-    > (message?: M, cause?: C, data?: D): Flare<SC, ST, M, D, C>
+        M extends string = '',
+        D extends object = {},
+        C extends Nullable<Error> = null
+    > (message?: M, cause?: C, data?: Non<Error, D>): Flare<SC, ST, M, D, C>
 
     new <
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null
-    > (message?: M, data?: D, cause?: C): Flare<SC, ST, M, D, C>
+        M extends string = '',
+        D extends object = {},
+        C extends Nullable<Error> = null
+    > (message?: M, data?: Non<Error, D>, cause?: C): Flare<SC, ST, M, D, C>
 
     new <
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null
-    > (data?: D, cause?: C, message?: M): Flare<SC, ST, M, D, C>
+        M extends string = '',
+        D extends object = {},
+        C extends Nullable<Error> = null
+    > (data?: Non<Error, D>, cause?: C, message?: M): Flare<SC, ST, M, D, C>
 
     new <
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null
-    > (data?: D, message?: M, cause?: C): Flare<SC, ST, M, D, C>
+        M extends string = '',
+        D extends object = {},
+        C extends Nullable<Error> = null
+    > (data?: Non<Error, D>, message?: M, cause?: C): Flare<SC, ST, M, D, C>
 }
 
 export interface CallableScopedFlare<SC extends number, ST extends string> {
     <
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null
-    > (cause?: C, data?: D, message?: M): Flare<SC, ST, M, D, C>
+        M extends string = '',
+        D extends object = {},
+        C extends Nullable<Error> = null
+    > (cause?: C, data?: Non<Error, D>, message?: M): Flare<SC, ST, M, D, C>
 
     <
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null
-    > (cause?: C, message?: M, data?: D): Flare<SC, ST, M, D, C>
+        M extends string = '',
+        D extends object = {},
+        C extends Nullable<Error> = null
+    > (cause?: C, message?: M, data?: Non<Error, D>): Flare<SC, ST, M, D, C>
 
     <
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null
-    > (message?: M, cause?: C, data?: D): Flare<SC, ST, M, D, C>
+        M extends string = '',
+        D extends object = {},
+        C extends Nullable<Error> = null
+    > (message?: M, cause?: C, data?: Non<Error, D>): Flare<SC, ST, M, D, C>
 
     <
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null
-    > (message?: M, data?: D, cause?: C): Flare<SC, ST, M, D, C>
+        M extends string = '',
+        D extends object = {},
+        C extends Nullable<Error> = null
+    > (message?: M, data?: Non<Error, D>, cause?: C): Flare<SC, ST, M, D, C>
 
     <
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null
-    > (data?: D, cause?: C, message?: M): Flare<SC, ST, M, D, C>
+        M extends string = '',
+        D extends object = {},
+        C extends Nullable<Error> = null
+    > (data?: Non<Error, D>, cause?: C, message?: M): Flare<SC, ST, M, D, C>
 
     <
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null
-    > (data?: D, message?: M, cause?: C): Flare<SC, ST, M, D, C>
+        M extends string = '',
+        D extends object = {},
+        C extends Nullable<Error> = null
+    > (data?: Non<Error, D>, message?: M, cause?: C): Flare<SC, ST, M, D, C>
 }
 
 /**
@@ -96,6 +97,8 @@ export interface ScopedFlare<
  * that produces new {@link ScopedFlare} instance with bound {@param statusCode} and {@param statusText}
  */
 export interface ScopedFlareConstructor {
+    name: 'ScopedFlare'
+
     isScopedFlare: typeof isScopedFlare
 
     <SC extends number, ST extends string>(
@@ -111,23 +114,24 @@ export interface ScopedFlareConstructor {
 
 /**
  * Implementation of both {@link ScopedFlare} and {@link ScopedFlareConstructor} interfaces
+ * @see {}
  */
-const SFC: ScopedFlareConstructor = function ScopedFlare <
+const ScopedFlareConstructor: ScopedFlareConstructor = function ScopedFlare <
     SC extends number,
     ST extends string
 > (statusCode: SC, statusText: ST): ScopedFlare<SC, ST> {
     if (!new.target) {
-        return new (ScopedFlare as any)(statusCode, statusText)
+        return new ScopedFlareConstructor(statusCode, statusText)
     }
 
     const instance = function <
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null
+        M extends string = '',
+        D extends object = {},
+        C extends Nullable<Error> = null
     > (message: M, data: D, cause: C): Flare<SC, ST, M, D, C> {
-        const flare = (Flare as any)(statusCode, statusText, message, data, cause)
+        const flare = new (Flare as any)(statusCode, statusText, message, data, cause)
 
-        /* Recapture stacktrace to remove to remove current function from stack */
+        /* Recapture stacktrace to remove current function from stack */
         Error.captureStackTrace(flare, instance as Function)
 
         return flare
@@ -143,7 +147,7 @@ const SFC: ScopedFlareConstructor = function ScopedFlare <
             configurable: true,
             enumerable: false,
             get () {
-                return `${instance.constructor.name}<${instance.statusCode}, "${instance.statusText}">`
+                return `${this.constructor.name}<${instance.statusCode}, "${instance.statusText}">`
             }
         },
         constructor: {
@@ -153,8 +157,10 @@ const SFC: ScopedFlareConstructor = function ScopedFlare <
         }
     })
 
-    return instance as unknown as ScopedFlare<SC, ST>
+    return instance
 } as ScopedFlareConstructor
+
+inherits(ScopedFlareConstructor, Function)
 
 /**
  * Checks if specified {@param value} is {@link ScopedFlare} instance, and has required properties
@@ -162,19 +168,10 @@ const SFC: ScopedFlareConstructor = function ScopedFlare <
 export function isScopedFlare <
     SC extends number,
     ST extends string
-> (value: ScopedFlare<SC, ST> | unknown): value is ScopedFlare<SC, ST> {
-    return typeof value === 'function'
-        && value instanceof SFC
-        && 'statusCode' in value
-        && 'statusText' in value
-        && 'name' in value
+> (value: unknown): value is ScopedFlare<SC, ST> {
+    return typeof value === 'function' && value instanceof ScopedFlareConstructor
 }
 
-SFC.isScopedFlare = isScopedFlare
+ScopedFlareConstructor.isScopedFlare = isScopedFlare
 
-inherits(SFC, Function)
-
-SFC.prototype.statusCode = 0
-SFC.prototype.statusText = ''
-
-export const ScopedFlare: ScopedFlareConstructor = SFC
+export const ScopedFlare = ScopedFlareConstructor

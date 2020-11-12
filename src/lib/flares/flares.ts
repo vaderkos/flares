@@ -30,8 +30,12 @@ export interface FlaresConstructor {
  * @see {Flares}
  * @see {FlaresConstructor}
  */
-export const F: FlaresConstructor = function Flares<S extends Statuses> (statuses: S): Flares<S> {
-    const flares = Object.create(Flares.prototype)
+export const FlaresConstructor: FlaresConstructor = function Flares<S extends Statuses> (statuses: S): Flares<S> {
+    if (!new.target) {
+        return new FlaresConstructor(statuses)
+    }
+
+    const flares = this
 
     for (const [method, [statusCode, statusText]] of Object.entries(statuses)) {
         flares[method as keyof S] = ScopedFlare(statusCode, statusText)
@@ -40,6 +44,6 @@ export const F: FlaresConstructor = function Flares<S extends Statuses> (statuse
     return flares
 } as FlaresConstructor
 
-F.isFlares = isFlares
+FlaresConstructor.isFlares = isFlares
 
-export const Flares = F
+export const Flares = FlaresConstructor

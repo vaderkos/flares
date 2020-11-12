@@ -113,21 +113,6 @@ describe('Flare', () => {
         })
     })
 
-    describe('Flare.prototype', () => {
-        it('Has all required default properties', () => {
-            const given = Object.create(Flare.prototype)
-
-            expect(given).to.be.an('object')
-            expect(given.name).to.be.a('string')
-            expect(given.message).to.be.a('string')
-            expect(given.stack).to.be.a('string')
-            expect(given.statusCode).to.be.a('number')
-            expect(given.statusText).to.be.a('string')
-            expect(given.data).to.be.an('object')
-            expect(given.cause).to.be.a('null')
-        })
-    })
-
     describe('Flare.prototype.name', () => {
         const getDummyName = (message: string, data: string, cause: string) =>
             `Flare<${dummyCode}, "${dummyText}", ${message}, ${data}, ${cause}>`

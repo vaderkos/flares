@@ -1,24 +1,20 @@
 import { inherits } from 'util'
 
-import { FlareSerializable } from '../flare-serializable'
-import { ScopedFlare } from '../scoped-flare'
 import { Non, Nullable } from '../toolkit'
-
-export type Message = string
-export type Data    = Non<Error, object>
-export type Cause   = Nullable<Error>
+import { ScopedFlare } from '../scoped-flare'
+import { SerializableFlare } from '../serializable-flare'
 
 /**
  * Http response representation
  */
-export interface Flare<
-    SC extends number = number,
-    ST extends string = string,
-    M  extends Message = '',
-    D  extends Data    = {},
-    C  extends Cause   = null,
+export interface Flare <
+    SC extends number,
+    ST extends string,
+    M  extends string = '',
+    D  extends object = {},
+    C  extends Nullable<Error> = null,
 > extends Error {
-    name: string
+    name:  string
     stack: string
     statusCode: SC
     statusText: ST
@@ -27,222 +23,30 @@ export interface Flare<
     cause:      C
 }
 
-export interface NewableFlareConstructor {
-    new <
-        SC extends number,
-        ST extends string,
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null,
-    > (
-        statusCode: SC,
-        statusText: ST,
-        cause?: C,
-        data?: Non<Error, D>,
-        message?: M
-    ): Flare<SC, ST, M, D, C>
-
-    new <
-        SC extends number,
-        ST extends string,
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null,
-    > (
-        statusCode: SC,
-        statusText: ST,
-        cause?: C,
-        message?: M,
-        data?: Non<Error, D>,
-    ): Flare<SC, ST, M, D, C>
-
-    new <
-        SC extends number,
-        ST extends string,
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null,
-    > (
-        statusCode: SC,
-        statusText: ST,
-        message?: M,
-        cause?: C,
-        data?: Non<Error, D>,
-    ): Flare<SC, ST, M, D, C>
-
-    new <
-        SC extends number,
-        ST extends string,
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null,
-    > (
-        statusCode: SC,
-        statusText: ST,
-        message?: M,
-        data?: Non<Error, D>,
-        cause?: C
-    ): Flare<SC, ST, M, D, C>
-
-    new <
-        SC extends number,
-        ST extends string,
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null,
-    > (
-        statusCode: SC,
-        statusText: ST,
-        data?: Non<Error, D>,
-        cause?: C,
-        message?: M
-    ): Flare<SC, ST, M, D, C>
-
-    new <
-        SC extends number,
-        ST extends string,
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null,
-    > (
-        statusCode: SC,
-        statusText: ST,
-        data?: Non<Error, D>,
-        message?: M,
-        cause?: C,
-    ): Flare<SC, ST, M, D, C>
-}
-
-export interface CallableFlareConstructor extends CallableFunction {
-    <
-        SC extends number,
-        ST extends string,
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null,
-    > (
-        statusCode: SC,
-        statusText: ST,
-        cause?: C,
-        data?: Non<Error, D>,
-        message?: M
-    ): Flare<SC, ST, M, D, C>
-
-    <
-        SC extends number,
-        ST extends string,
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null,
-    > (
-        statusCode: SC,
-        statusText: ST,
-        cause?: C,
-        message?: M,
-        data?: Non<Error, D>,
-    ): Flare<SC, ST, M, D, C>
-
-    <
-        SC extends number,
-        ST extends string,
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null
-    > (
-        statusCode: SC,
-        statusText: ST,
-        message?: M,
-        cause?: C,
-        data?: Non<Error, D>,
-    ): Flare<SC, ST, M, D, C>
-
-    <
-        SC extends number,
-        ST extends string,
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null,
-    > (
-        statusCode: SC,
-        statusText: ST,
-        message?: M,
-        data?: Non<Error, D>,
-        cause?: C
-    ): Flare<SC, ST, M, D, C>
-
-    <
-        SC extends number,
-        ST extends string,
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null,
-    > (
-        statusCode: SC,
-        statusText: ST,
-        data?: Non<Error, D>,
-        cause?: C,
-        message?: M
-    ): Flare<SC, ST, M, D, C>
-
-    <
-        SC extends number,
-        ST extends string,
-        M extends Message = '',
-        D extends Data    = {},
-        C extends Cause   = null,
-    > (
-        statusCode: SC,
-        statusText: ST,
-        data?: Non<Error, D>,
-        message?: M,
-        cause?: C,
-    ): Flare<SC, ST, M, D, C>
-}
-
-/**
- * Callable/newable function
- * that produces new {@link Flare} instance
- */
-export interface FlareConstructor extends NewableFlareConstructor, CallableFlareConstructor {
-    isFlare: typeof isFlare
-    isMessage: typeof isMessage
-    isData: typeof isData
-    isCause: typeof isCause
-    scoped: typeof ScopedFlare
-    serializable: typeof FlareSerializable
-}
-
 /**
  * Checks if specified {@param value} is instance of {@link Flare}
  */
 export function isFlare <
     SC extends number,
     ST extends string,
-    M extends Message = Message,
-    D extends Data    = Data,
-    C extends Cause   = Cause,
-> (value: Flare<SC, ST, M, D, C> | unknown): value is Flare<SC, ST, M, D, C> {
-    return typeof value === 'object'
-        && value instanceof Flare
-        && 'statusCode' in value
-        && 'statusText' in value
-        && 'message' in value
-        && 'data' in value
-        && 'cause' in value
-        && 'name' in value
+    M  extends string = '',
+    D  extends object = {},
+    C  extends Nullable<Error> = null,
+> (value: unknown): value is Flare<SC, ST, M, D, C> {
+    return typeof value === 'object' && value instanceof Flare
 }
 
 /**
  * Checks if {@param value} is assignable to {@link Flare.message} parameter
  */
-export function isMessage <M extends Message> (value: unknown): value is M {
+export function isMessage (value: unknown): value is string {
     return typeof value === 'string'
 }
 
 /**
  * Checks if {@param value} is assignable to {@link Flare.cause} parameter
  */
-export function isCause <C extends Cause> (value: unknown): value is C {
+export function isCause (value: unknown): value is Nullable<Error> {
     return value === null
         || (typeof value === 'object' && value instanceof Error)
 }
@@ -250,8 +54,195 @@ export function isCause <C extends Cause> (value: unknown): value is C {
 /**
  * Checks if {@param value} is assignable to {@link Flare.data} parameter
  */
-export function isData <D extends Data> (value: unknown): value is D {
+export function isData (value: unknown): value is Non<Error, object> {
     return typeof value === 'object' && !isCause(value)
+}
+
+export interface CallableFlareConstructor {
+    <
+        SC extends number,
+        ST extends string,
+        M  extends string = '',
+        D  extends object = {},
+        C  extends Nullable<Error> = null,
+    > (
+        statusCode: SC,
+        statusText: ST,
+        cause?:   C,
+        data?:    Non<Error, D>,
+        message?: M
+    ): Flare<SC, ST, M, D, C>
+
+    <
+        SC extends number,
+        ST extends string,
+        M  extends string = '',
+        D  extends object = {},
+        C  extends Nullable<Error> = null,
+    > (
+        statusCode: SC,
+        statusText: ST,
+        cause?:   C,
+        message?: M,
+        data?:    Non<Error, D>,
+    ): Flare<SC, ST, M, D, C>
+
+    <
+        SC extends number,
+        ST extends string,
+        M  extends string = '',
+        D  extends object = {},
+        C  extends Nullable<Error> = null,
+    > (
+        statusCode: SC,
+        statusText: ST,
+        message?: M,
+        cause?:   C,
+        data?:    Non<Error, D>,
+    ): Flare<SC, ST, M, D, C>
+
+    <
+        SC extends number,
+        ST extends string,
+        M  extends string = '',
+        D  extends object = {},
+        C  extends Nullable<Error> = null,
+    > (
+        statusCode: SC,
+        statusText: ST,
+        message?: M,
+        data?:    Non<Error, D>,
+        cause?:   C
+    ): Flare<SC, ST, M, D, C>
+
+    <
+        SC extends number,
+        ST extends string,
+        M  extends string = '',
+        D  extends object = {},
+        C  extends Nullable<Error> = null,
+    > (
+        statusCode: SC,
+        statusText: ST,
+        data?:    Non<Error, D>,
+        cause?:   C,
+        message?: M
+    ): Flare<SC, ST, M, D, C>
+
+    <
+        SC extends number,
+        ST extends string,
+        M  extends string = '',
+        D  extends object = {},
+        C  extends Nullable<Error> = null,
+    > (
+        statusCode: SC,
+        statusText: ST,
+        data?:    Non<Error, D>,
+        message?: M,
+        cause?:   C,
+    ): Flare<SC, ST, M, D, C>
+}
+
+export interface NewableFlareConstructor {
+    new <
+        SC extends number,
+        ST extends string,
+        M  extends string = '',
+        D  extends object = {},
+        C  extends Nullable<Error> = null,
+    > (
+        statusCode: SC,
+        statusText: ST,
+        cause?:   C,
+        data?:    Non<Error, D>,
+        message?: M
+    ): Flare<SC, ST, M, D, C>
+
+    new <
+        SC extends number,
+        ST extends string,
+        M  extends string = '',
+        D  extends object = {},
+        C  extends Nullable<Error> = null,
+    > (
+        statusCode: SC,
+        statusText: ST,
+        cause?:   C,
+        message?: M,
+        data?:    Non<Error, D>,
+    ): Flare<SC, ST, M, D, C>
+
+    new <
+        SC extends number,
+        ST extends string,
+        M  extends string = '',
+        D  extends object = {},
+        C  extends Nullable<Error> = null,
+    > (
+        statusCode: SC,
+        statusText: ST,
+        message?: M,
+        cause?:   C,
+        data?:    Non<Error, D>,
+    ): Flare<SC, ST, M, D, C>
+
+    new <
+        SC extends number,
+        ST extends string,
+        M  extends string = '',
+        D  extends object = {},
+        C  extends Nullable<Error> = null,
+    > (
+        statusCode: SC,
+        statusText: ST,
+        message?: M,
+        data?:    Non<Error, D>,
+        cause?:   C
+    ): Flare<SC, ST, M, D, C>
+
+    new <
+        SC extends number,
+        ST extends string,
+        M  extends string = '',
+        D  extends object = {},
+        C  extends Nullable<Error> = null,
+    > (
+        statusCode: SC,
+        statusText: ST,
+        data?:    Non<Error, D>,
+        cause?:   C,
+        message?: M
+    ): Flare<SC, ST, M, D, C>
+
+    new <
+        SC extends number,
+        ST extends string,
+        M  extends string = '',
+        D  extends object = {},
+        C  extends Nullable<Error> = null,
+    > (
+        statusCode: SC,
+        statusText: ST,
+        data?:    Non<Error, D>,
+        message?: M,
+        cause?:   C,
+    ): Flare<SC, ST, M, D, C>
+}
+
+/**
+ * Callable/newable function
+ * that produces new {@link Flare} instance
+ */
+export interface FlareConstructor extends CallableFlareConstructor, NewableFlareConstructor {
+    name: 'Flare'
+
+    isMessage:    typeof isMessage
+    isCause:      typeof isCause
+    isData:       typeof isData
+    isFlare:      typeof isFlare
+    serializable: typeof SerializableFlare
+    scoped:       typeof ScopedFlare
 }
 
 /**
@@ -259,14 +250,12 @@ export function isData <D extends Data> (value: unknown): value is D {
  * @see {Flare}
  * @see {FlareConstructor}
  */
-const F: FlareConstructor = function Flare <
-    SC extends number,
-    ST extends string,
-    M extends Message = '',
-    D extends Data    = {},
-    C extends Cause   = null,
-> (...args: Parameters<FlareConstructor>): Flare<SC, ST, M, D, C>  {
-    const flare = Object.create(Flare.prototype)
+export const FlareConstructor: FlareConstructor = function Flare (...args: Parameters<FlareConstructor>) {
+    if (!new.target) {
+        return new (FlareConstructor as any)(...args)
+    }
+
+    const flare = this
 
     const [statusCode, statusText, ...unordered] = args
 
@@ -293,13 +282,36 @@ const F: FlareConstructor = function Flare <
     })
 
     return flare
-} as FlareConstructor
+} as unknown as FlareConstructor
 
+inherits(FlareConstructor, Error)
 
-inherits(F, Error)
+Object.defineProperties(FlareConstructor.prototype, {
+    name: {
+        enumerable: false,
+        get () {
+            const sc = this.statusCode
+            const st = this.statusText
+
+            const m = this.message === ''
+                ? '""'
+                : 'string'
+
+            const d = this.data?.constructor?.name === 'Object'
+                ? (Object.keys(this.data).length ? 'object' : '{}')
+                : (this.data?.constructor?.name ?? 'object')
+
+            const c = this.cause instanceof Error
+                ? this.cause.name
+                : 'null'
+
+            return `${this.constructor.name}<${sc}, "${st}", ${m}, ${d}, ${c}>`
+        }
+    }
+})
 
 /* Add methods from FlareConstructor */
-Object.defineProperties(F, {
+Object.defineProperties(FlareConstructor, {
     isFlare: {
         configurable: true,
         enumerable: false,
@@ -323,62 +335,12 @@ Object.defineProperties(F, {
         enumerable: false,
         writable: true,
         value: isCause
-    },
-    scoped: {
-        configurable: true,
-        enumerable: false,
-        writable: true,
-        value: ScopedFlare
-    },
-    serializable: {
-        configurable: true,
-        enumerable: false,
-        writable: true,
-        value: FlareSerializable
     }
 })
 
+export const Flare = FlareConstructor
 
-/*
-    Adding defaults to prototype so Flare instance
-    can be created using Object.create(Flare.prototype)
-*/
 
-F.prototype.statusCode = 0
-F.prototype.statusText = ''
-F.prototype.message    = ''
-F.prototype.cause      = null
-F.prototype.stack      = ''
 
-Object.defineProperties(F.prototype, {
-    name: {
-        enumerable: false,
-        get () {
-            const sc = this.statusCode
-            const st = this.statusText
 
-            const m = this.message === ''
-                ? '""'
-                : 'string'
 
-            const d = this.data?.constructor?.name === 'Object'
-                ? (Object.keys(this.data).length ? 'object' : '{}')
-                : (this.data?.constructor?.name ?? 'object')
-
-            const c = this.cause instanceof Error
-                ? this.cause.name
-                : 'null'
-
-            return `${this.constructor.name}<${sc}, "${st}", ${m}, ${d}, ${c}>`
-        }
-    },
-    data: {
-        configurable: true,
-        enumerable: true,
-        get () {
-            return {}
-        }
-    }
-})
-
-export const Flare: FlareConstructor = F

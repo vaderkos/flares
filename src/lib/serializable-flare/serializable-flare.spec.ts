@@ -3,18 +3,18 @@ import { expect } from 'chai'
 
 import { Flare } from '../flare'
 
-import { FlareSerializable } from './flare-serializable'
+import { SerializableFlare } from './serializable-flare'
 
-describe('FlareSerializable', () => {
+describe('SerializableFlare', () => {
     it('Should convert to null', () => {
-        expect(FlareSerializable(null)).equals(null)
-        expect(FlareSerializable(undefined)).equals(null)
+        expect(SerializableFlare(null)).equals(null)
+        expect(SerializableFlare(undefined)).equals(null)
     })
 
     it('Should convert to object with structure similar to Error', () => {
         const given = new Error('test')
 
-        const ser = FlareSerializable(given)
+        const ser = SerializableFlare(given)
 
         expect(ser).to.include.all.keys(
             'name',
@@ -32,7 +32,7 @@ describe('FlareSerializable', () => {
     it('Should convert to object with structure similar to Flare', () => {
         const given = new Flare(0, '')
 
-        const ser = FlareSerializable(given)
+        const ser = SerializableFlare(given)
 
         expect(ser).to.include.all.keys(
             'name',
@@ -45,11 +45,11 @@ describe('FlareSerializable', () => {
         )
     })
 
-    it('Should properly convert Error recursively when cause exists', () => {
+    it('Should properly convert cause Error recursively', () => {
         const given = new Error('test') as Error & { cause: Error }
         given.cause = new SyntaxError()
 
-        const ser = FlareSerializable(given)
+        const ser = SerializableFlare(given)
 
         expect(ser).to.include.all.keys(
             'name',
@@ -75,6 +75,10 @@ describe('FlareSerializable', () => {
             'statusText',
             'data'
         )
+
+    })
+
+    describe('Usage with JSON.stringify()', () => {
 
     })
 })
