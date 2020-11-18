@@ -6,13 +6,17 @@
   "license": "MIT",
   "private": true,
   "type": "module",
+  "files": [
+    "./dist"
+  ],
   "workspaces": [
     "packages/core",
     "packages/express",
     "packages/api/*"
   ],
   "scripts": {
-    "develop": "npx lerna bootstrap && npx lerna link",
+    "build": "npx tsc",
+    "setup": "npx lerna bootstrap && npx lerna link",
     "lint": "npx eslint ./packages/**/*.ts",
     "lint:fix": "npx eslint ./packages/**/*.ts --fix",
     "test": "yarn run test:compile && yarn run test:unit",
