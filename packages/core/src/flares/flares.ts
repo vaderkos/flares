@@ -9,7 +9,7 @@ export type Flares<S extends Statuses> = {
  * Checks if {@param value} is assignable to {@link Flares} type
  */
 export function isFlares<S extends Statuses> (value: unknown): value is Flares<S> {
-    return typeof (value !== 'object' || typeof value === 'undefined' || value === null)
+    return (typeof value !== 'object' || typeof value === 'undefined' || value === null)
         ? false
         : (value instanceof Flares || Object.values(value as object).every(isScopedFlare))
 }
