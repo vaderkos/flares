@@ -1,9 +1,9 @@
 {
   "name": "@flares/lower-dot-case",
-  "version": "1.0.0",
+  "version": "1.0.1-alpha.0",
   "license": "MIT",
   "author": "Mykyta Smirnov <mykyta.smirnov.dev@gmail.com>",
   "dependencies": {
-    "@flares/core": "^1.0.0"
+    "@flares/core": "^1.0.1-alpha.0"
   }
 }
