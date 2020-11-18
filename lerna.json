@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "workspaces": [
+    "packages/core",
+    "packages/express",
+    "packages/api/*"
+  ],
+  "packages": [
+    "packages/core",
+    "packages/express",
+    "packages/api/*"
+  ]
+}

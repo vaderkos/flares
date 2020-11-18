@@ -5,6 +5,7 @@
     "unicorn"
   ],
   "extends": [],
+  "ignorePatterns": ["./dist"],
   "parserOptions": {
     "project": "./tsconfig.json",
     "sourceType": "module"

@@ -9,13 +9,15 @@
     "noImplicitThis": false,
     "strictNullChecks": true,
     "experimentalDecorators": true,
+    "declaration": true,
     "outDir": "./dist"
   },
   "include": [
-    "./**/*.ts"
+    "./packages/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "./dist"
   ],
   "ts-node": {
     "files": true

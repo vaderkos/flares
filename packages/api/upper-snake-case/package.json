@@ -1,0 +1,9 @@
+{
+  "name": "@flares/upper-snake-case",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "Mykyta Smirnov <mykyta.smirnov.dev@gmail.com>",
+  "dependencies": {
+    "@flares/core": "^1.0.0"
+  }
+}

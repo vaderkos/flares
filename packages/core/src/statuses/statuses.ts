@@ -8,8 +8,8 @@ export type Statuses = {
 /**
  * Checks if {@param value} is of {@link Statuses} type
  */
-export function isStatuses <S extends Statuses> (value: unknown | S): value is S {
-    return typeof value !== 'object' || typeof value === 'undefined' || value === null
+export function isStatuses <S extends Statuses> (value: unknown): value is S {
+    return (typeof value !== 'object' || typeof value === 'undefined' || value === null)
         ? false
         : Object
             .values(value as object)
