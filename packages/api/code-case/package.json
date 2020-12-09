@@ -1,9 +1,0 @@
-{
-  "name": "@flares/code-case",
-  "version": "0.0.0",
-  "license": "MIT",
-  "author": "Mykyta Smirnov <mykyta.smirnov.dev@gmail.com>",
-  "dependencies": {
-    "@flares/core": "^0.0.0"
-  }
-}

@@ -5,7 +5,7 @@
     "unicorn"
   ],
   "extends": [],
-  "ignorePatterns": ["./dist"],
+  "ignorePatterns": ["dist", "gulpfile.ts"],
   "parserOptions": {
     "project": "./tsconfig.json",
     "sourceType": "module"
