@@ -9,7 +9,7 @@
   "contributors": [],
   "private": false,
   "dependencies": {
-    "@flares/core": "^1.0.0"
+    "@flares/core": "^1.0.0-beta"
   },
   "scripts": {
     "build": "rm -rf ./dist && tsc",
