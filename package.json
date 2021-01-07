@@ -8,11 +8,16 @@
   "private": true,
   "type": "module",
   "workspaces": [
-    "packages/*"
+    "packages/core",
+    "packages/express",
+    "packages/camel-case-flares",
+    "packages/camel-case-code-flares",
+    "packages/pascal-case-flares",
+    "packages/pascal-case-code-flares"
   ],
   "scripts": {
-    "build": "lerna run build",
-    "setup": "lerna run bootstrap && lerna run link",
+    "build": "npx lerna run build",
+    "setup": "yarn && yarn run build && npx lerna bootstrap && npx lerna link",
     "lint": "npx eslint packages/**/*.ts",
     "lint:fix": "npx eslint packages/**/*.ts --fix",
     "test": "yarn run test:compile && yarn run test:unit",
@@ -70,7 +75,8 @@
     ],
     "exclude": [
       "packages/**/index.ts",
-      "packages/**/*.spec.ts"
+      "packages/**/*.spec.ts",
+      "packages/**/dist/**/*"
     ]
   }
 }

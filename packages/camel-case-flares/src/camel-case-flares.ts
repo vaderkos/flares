@@ -9,3 +9,5 @@ export {
     CamelCaseFlares as Fls
 }
 
+/* JS has some words like 'continue' reserved so no export of properties */
+
