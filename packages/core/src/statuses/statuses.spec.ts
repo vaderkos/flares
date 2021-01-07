@@ -5,19 +5,27 @@ import { Statuses, isStatuses } from './statuses'
 import { CodeStatuses } from './code-statuses'
 import {
     CamelCaseStatuses,
-    LowerDashCaseStatuses,
-    LowerDotCaseStatuses,
     PascalCaseStatuses,
+
+    CamelCaseCodeStatuses,
+    PascalCaseCodeStatuses,
+
+    LowerDotCaseStatuses,
+    LowerDashCaseStatuses,
     LowerSnakeCaseStatuses,
-    UpperSnakeCaseStatuses,
+
+    UpperDotCaseStatuses,
     UpperDashCaseStatuses,
-    UpperDotCaseStatuses
+    UpperSnakeCaseStatuses,
 } from './cases'
 
 describe('Statuses', () => {
     const casedStatuses = {
         'PascalCase':       PascalCaseStatuses,
         'camelCase':        CamelCaseStatuses,
+
+        'PascalCaseCode':   PascalCaseCodeStatuses,
+        'camelCaseCode':    CamelCaseCodeStatuses,
 
         'lower-dash-case':  LowerDashCaseStatuses,
         'lower.dot.case':   LowerDotCaseStatuses,

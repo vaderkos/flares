@@ -10,3 +10,5 @@ node_modules
 
 packages/api/**/*
 !packages/api/.gitkeep
+
+lerna-debug.log

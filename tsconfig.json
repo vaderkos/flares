@@ -10,14 +10,15 @@
     "noImplicitThis": false,
     "strictNullChecks": true,
     "experimentalDecorators": true,
-    "declaration": true
+    "declaration": true,
+    "outDir": "./dist"
   },
   "include": [
     "./**/*.json",
     "./**/*.ts"
   ],
   "exclude": [
-    "node_modules",
+    "./node_modules",
     "./dist"
   ],
   "ts-node": {

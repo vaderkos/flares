@@ -1,6 +1,6 @@
 {
   "name": "flares",
-  "version": "0.0.0",
+  "version": "1.0.0-beta",
   "repository": "https://github.com/vaderkos/flares",
   "author": "Mykyta Smirnov <mykyta.smirnov.dev@gmail.com>",
   "contributors": [],
@@ -8,26 +8,16 @@
   "private": true,
   "type": "module",
   "workspaces": [
-    "packages/core",
-    "packages/api/express",
-    "packages/cases/code-case",
-    "packages/cases/camel-case",
-    "packages/cases/pascal-case",
-    "packages/cases/lower-snake-case",
-    "packages/cases/lower-dash-case",
-    "packages/cases/lower-dot-case",
-    "packages/cases/upper-snake-case",
-    "packages/cases/upper-dash-case",
-    "packages/cases/upper-dot-case"
+    "packages/*"
   ],
   "scripts": {
     "build": "lerna run build",
-    "setup": "npx lerna bootstrap && npx lerna link",
-    "lint": "npx eslint ./packages/**/*.ts",
-    "lint:fix": "npx eslint ./packages/**/*.ts --fix",
+    "setup": "lerna run bootstrap && lerna run link",
+    "lint": "npx eslint packages/**/*.ts",
+    "lint:fix": "npx eslint packages/**/*.ts --fix",
     "test": "yarn run test:compile && yarn run test:unit",
-    "test:compile": "npx tsc --noEmit",
-    "test:unit": "npx nyc mocha"
+    "test:unit": "npx nyc mocha",
+    "test:compile": "npx tsc --noEmit"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
