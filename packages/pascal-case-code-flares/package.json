@@ -3,13 +3,13 @@
   "main": "./dist",
   "types": "./dist",
   "license": "MIT",
-  "version": "1.0.0-beta.8",
+  "version": "1.0.0-beta.9",
   "description": "TODO",
   "author": "Mykyta Smirnov <mykyta.smirnov.dev@gmail.com> (https://github.com/vaderkos)",
   "contributors": [],
   "private": false,
   "dependencies": {
-    "@flares/core": "^1.0.0-beta.8"
+    "@flares/core": "^1.0.0-beta.9"
   },
   "scripts": {
     "build": "rm -rf ./dist && tsc",
@@ -21,7 +21,7 @@
     "./dist"
   ],
   "publishConfig": {
-    "directory": "dist"
+    "directory": "./"
   },
   "repository": {
     "url": "https://github.com/vaderkos/flares.git",
@@ -51,5 +51,5 @@
     "raise",
     "handling"
   ],
-  "gitHead": "05dff3a52cc4ccfd7883e4163d8576c67dd44532"
+  "gitHead": "e218e3d4ac20a7c90b8be48dab740ced81e14706"
 }
