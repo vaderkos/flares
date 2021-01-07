@@ -17,6 +17,9 @@
     "./package.json",
     "./dist"
   ],
+  "publishConfig": {
+    "directory": "dist"
+  },
   "repository": {
     "url": "https://github.com/vaderkos/flares.git",
     "type": "git"
