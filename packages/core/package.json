@@ -3,23 +3,20 @@
   "main": "./dist",
   "types": "./dist",
   "license": "MIT",
-  "version": "1.0.0-beta.10",
+  "version": "1.0.0-beta.11",
   "description": "TODO",
   "author": "Mykyta Smirnov <mykyta.smirnov.dev@gmail.com> (https://github.com/vaderkos)",
   "contributors": [],
   "private": false,
   "scripts": {
     "build": "rm -rf ./dist && tsc",
-    "prepublish": "yarn run build"
+    "prepack": "yarn run build"
   },
   "files": [
     "./README.md",
     "./package.json",
     "./dist"
   ],
-  "publishConfig": {
-    "directory": "./"
-  },
   "repository": {
     "url": "https://github.com/vaderkos/flares.git",
     "type": "git"
