@@ -11,15 +11,18 @@
     "strictNullChecks": true,
     "experimentalDecorators": true,
     "declaration": true,
+    "skipLibCheck": true,
     "outDir": "./dist"
   },
   "include": [
-    "./**/*.json",
-    "./**/*.ts"
+    "./packages/**/*.json",
+    "./packages/**/*.ts"
   ],
   "exclude": [
     "./node_modules",
-    "./dist"
+    "./dist",
+    "./**/node_modules",
+    "./**/node_modules"
   ],
   "ts-node": {
     "files": true

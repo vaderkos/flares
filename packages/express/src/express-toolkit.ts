@@ -1,9 +1,18 @@
-import { ErrorRequestHandler, NextFunction, Request, Response } from 'express'
+import { ErrorRequestHandler, RequestHandler } from 'express-serve-static-core'
 
-export type AsyncErrorHandler<T> = (err: Error, req: Request, res: Response, next: NextFunction) => Promise<T>
 
-export type ErrorHandler = ErrorRequestHandler
-export const AsyncErrorHandler = <T>(handler: AsyncErrorHandler<T>): ErrorRequestHandler =>
-    (err, req, res, next): void => {
-        handler(err, req, res, next).catch(next)
+export type AsyncRequestHandler<T> = (...args: Parameters<RequestHandler>) => Promise<T>
+export type AsyncErrorRequestHandler<T> = (...args: Parameters<ErrorRequestHandler>) => Promise<T>
+
+
+export function AsyncRequestHandler<T> (handler: AsyncRequestHandler<T>): RequestHandler {
+    return (req, res, next): void => {
+        handler(req, res, next).catch(next)
     }
+}
+
+export function AsyncErrorRequestHandler<T> (errorHandler: AsyncErrorRequestHandler<T>): ErrorRequestHandler {
+    return (err, req, res, next): void => {
+        errorHandler(err, req, res, next).catch(next)
+    }
+}
