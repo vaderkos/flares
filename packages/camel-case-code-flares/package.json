@@ -3,13 +3,13 @@
   "main": "./dist",
   "types": "./dist",
   "license": "MIT",
-  "version": "1.0.0-beta.17",
+  "version": "1.0.0-beta.18",
   "description": "TODO",
   "author": "Mykyta Smirnov <mykyta.smirnov.dev@gmail.com> (https://github.com/vaderkos)",
   "contributors": [],
   "private": false,
   "dependencies": {
-    "@flares/core": "^1.0.0-beta.17"
+    "@flares/core": "^1.0.0-beta.18"
   },
   "scripts": {
     "build": "rm -rf ./dist && tsc",
@@ -48,5 +48,5 @@
     "raise",
     "handling"
   ],
-  "gitHead": "e218e3d4ac20a7c90b8be48dab740ced81e14706"
+  "gitHead": "31631fd8677221fe605df2bc93ef8d672a4ebbff"
 }
