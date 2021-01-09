@@ -3,13 +3,13 @@
   "main": "./dist",
   "types": "./dist",
   "license": "MIT",
-  "version": "1.0.0-beta.13",
+  "version": "1.0.0-beta.17",
   "description": "TODO",
   "author": "Mykyta Smirnov <mykyta.smirnov.dev@gmail.com> (https://github.com/vaderkos)",
   "contributors": [],
   "private": false,
   "dependencies": {
-    "@flares/core": "^1.0.0-beta.11"
+    "@flares/core": "^1.0.0-beta.17"
   },
   "scripts": {
     "build": "rm -rf ./dist && tsc",
