@@ -35,8 +35,19 @@
     "type",
     "types",
     "typed",
+    "typescript",
     "flare",
-    "flares"
+    "flares",
+    "raise",
+    "raising",
+    "raisable",
+    "throw",
+    "throwing",
+    "throwable",
+    "handler",
+    "handling",
+    "cases",
+    "common"
   ],
   "gitHead": "31631fd8677221fe605df2bc93ef8d672a4ebbff"
 }

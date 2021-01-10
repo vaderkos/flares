@@ -38,15 +38,18 @@
     "type",
     "types",
     "typed",
+    "typescript",
     "flare",
     "flares",
-    "pascal",
-    "express",
-    "middleware",
-    "handler",
-    "throw",
     "raise",
-    "handling"
+    "raising",
+    "raisable",
+    "throw",
+    "throwing",
+    "throwable",
+    "handler",
+    "handling",
+    "pascal"
   ],
   "gitHead": "31631fd8677221fe605df2bc93ef8d672a4ebbff"
 }
