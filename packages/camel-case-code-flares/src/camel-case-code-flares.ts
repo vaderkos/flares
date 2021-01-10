@@ -1,13 +1,10 @@
 import { Flares, CamelCaseCodeStatuses } from '@flares/core'
 
-const CamelCaseCodeFlares = new Flares(CamelCaseCodeStatuses)
+export const CamelCaseCodeFlares = new Flares(CamelCaseCodeStatuses)
 
-type CamelCaseCodeFlares = typeof CamelCaseCodeFlares
+export type CamelCaseCodeFlares = typeof CamelCaseCodeFlares
 
-export {
-    CamelCaseCodeFlares,
-    CamelCaseCodeFlares as Fls
-}
+export const Fls = CamelCaseCodeFlares
 
 export const {
     continue100,

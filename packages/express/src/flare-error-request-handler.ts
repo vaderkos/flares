@@ -1,5 +1,14 @@
 import { ErrorRequestHandler } from 'express'
-import { isFlare, SerializableFlare, AnyScopedFlare, AnyFlare } from '@flares/core'
+import {
+    isFlare,
+    isScopedFlare,
+    isMessage,
+    isData,
+    isCause,
+    SerializableFlare,
+    AnyScopedFlare,
+    AnyFlare,
+} from '@flares/core'
 
 import { AsyncErrorRequestHandler } from './express-toolkit'
 
@@ -31,16 +40,35 @@ export function FlareErrorRequestHandler (options: FlareErrorRequestHandlerOptio
     const mapFlare = options.mapFlare ?? (_ => _)
     const mapResponseBody = options.mapResponseBody ?? SerializableFlare
 
+    const toFlare = async (err: any) => {
+        if (isFlare(err)) {
+            return err
+        }
+
+        /* Dealing with forgotten call of ScopedFlare :P */
+        if (isScopedFlare(err)) {
+            return err()
+        }
+
+        if (isScopedFlare(wrapNonFlare)) {
+            if (!isMessage(err) && !isData(err) && !isCause(err)) {
+                throw new TypeError(`${wrapNonFlare.name} function called with wrong argument type ${typeof err}`)
+            }
+
+            return wrapNonFlare!!(err as any)
+        }
+
+        return wrapNonFlare!!(err)
+    }
+
 
     return AsyncErrorRequestHandler(async (err, _req, res, next): Promise<void> => {
-        if (!isFlare(err) && !wrapNonFlare) {
+        if (!isFlare(err) && !isScopedFlare(err) && !wrapNonFlare) {
             next(err)
             return
         }
 
-        err = isFlare(err)
-            ? err
-            : await wrapNonFlare!!(err)
+        err = toFlare(err)
 
         const flare = await mapFlare(err)
 

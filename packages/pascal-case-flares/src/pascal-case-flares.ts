@@ -1,13 +1,10 @@
 import { Flares, PascalCaseStatuses } from '@flares/core'
 
-const PascalCaseFlares = new Flares(PascalCaseStatuses)
+export const PascalCaseFlares = new Flares(PascalCaseStatuses)
 
-type PascalCaseFlares = typeof PascalCaseFlares
+export type PascalCaseFlares = typeof PascalCaseFlares
 
-export {
-    PascalCaseFlares,
-    PascalCaseFlares as Fls
-}
+export const Fls = PascalCaseFlares
 
 export const {
     Continue,

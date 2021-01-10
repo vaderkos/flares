@@ -1,13 +1,10 @@
 import { Flares, CamelCaseStatuses } from '@flares/core'
 
-const CamelCaseFlares = new Flares(CamelCaseStatuses)
+export const CamelCaseFlares = new Flares(CamelCaseStatuses)
 
-type CamelCaseFlares = typeof CamelCaseFlares
+export type CamelCaseFlares = typeof CamelCaseFlares
 
-export {
-    CamelCaseFlares,
-    CamelCaseFlares as Fls
-}
+export const Fls = CamelCaseFlares
 
 /* JS has some words like 'continue' reserved so no export of properties */
 
