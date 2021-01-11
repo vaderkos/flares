@@ -18,12 +18,12 @@ export interface SerializableFlare {
 
 /**
  * Converts anything of {@link Nullable<Error>} type
- * to {@link SerializableFlare} that is plain object with all properties recursively enumerable
+ * to {@link SerializableFlare} that is plain object with all Flare properties recursively enumerable
  * Result can be fully serialized with {@link JSON.stringify}
  */
-export function SerializableFlare (
-    err?: Nullable<Error>
-): Nullable<SerializableFlare> {
+export function SerializableFlare<E extends Error> (
+    err?: Nullable<E>
+): Nullable<E & SerializableFlare> {
 
     if (err === null || err === undefined) {
         return null
@@ -33,6 +33,7 @@ export function SerializableFlare (
         const { name, message, stack, statusCode, statusText, data, cause } = err
 
         return {
+            ...err,
             name,
             statusCode,
             statusText,
@@ -46,6 +47,7 @@ export function SerializableFlare (
     const { name, message, stack, cause } = err as (Error & { cause?: Error })
 
     return {
+        ...err,
         name,
         message,
         stack: stack ?? '',

@@ -78,7 +78,26 @@ describe('SerializableFlare', () => {
 
     })
 
-    describe('Usage with JSON.stringify()', () => {
+    it('Should properly convert customer Error with extra properties', () => {
+        const err = new Error() as Error & { visible: number; hidden: number }
 
+        err.visible = 1
+
+        Object.defineProperty(err, 'hidden', {
+            enumerable: false,
+            value: 2
+        })
+
+        const sf = SerializableFlare(err)
+
+        expect(sf).to.include.all.keys(
+            'visible',
+            'name',
+            'message',
+            'stack',
+            'cause'
+        )
+
+        expect(sf).to.not.include.any.keys('hidden')
     })
 })

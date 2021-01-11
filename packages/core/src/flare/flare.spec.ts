@@ -43,7 +43,7 @@ describe('Flare', () => {
                 'message, data':        { args: [message, data],         result: [message, data, null]  },
                 'message, data, cause': { args: [message, data, cause],  result: [message, data, cause] },
                 'message, cause':       { args: [message, cause],        result: [message, {}, cause]   },
-                'message, cause, Data': { args: [message, cause, data],  result: [message, data, cause] },
+                'message, cause, data': { args: [message, cause, data],  result: [message, data, cause] },
                 'data':                 { args: [data],                  result: ['', data, null]       },
                 'data, message':        { args: [data, message],         result: [message, data, null]  },
                 'data, message, cause': { args: [data, message, cause],  result: [message, data, cause] },
