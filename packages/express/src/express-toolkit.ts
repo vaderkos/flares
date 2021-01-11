@@ -16,3 +16,9 @@ export function AsyncErrorRequestHandler<T> (errorHandler: AsyncErrorRequestHand
         errorHandler(err, req, res, next).catch(next)
     }
 }
+
+export function ThrowErrorRequestHandler<E extends Error> (err: E): RequestHandler {
+    return function (_req, _res, next): void {
+        next(err)
+    }
+}
