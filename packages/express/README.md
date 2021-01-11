@@ -7,20 +7,40 @@ This package is intended to use with packages that are compatible with `@flares/
 * [```@flares/pascal-case-flares```](https://www.npmjs.com/package/@flares/pascal-case-flares)
 * [```@flares/pascal-case-code-flares```](https://www.npmjs.com/package/@flares/pascal-case-code-flares)
 
+## Basic Usage
+
 ```ts
 import express from 'express'
 import { FlareErrorRequestHandler, ThrowErrorRequestHandler } from '@flare/express'
-import { NotFound404, Internal500 } from '@flares/pascal-case-code-flares'
+
+// You can use any cased package to meet your code style in project
+import { NotFound404, Internal500, Fls } from '@flares/pascal-case-code-flares'
 
 const app = express()
 
-app.get('/get404', ThrowErrorRequestHandler(NotFound404()))
+app.get('/not-found', ThrowErrorRequestHandler(NotFound404()))
 
-app.get('/test', (req, res, next) => {
-    throw new Internal500('My custom message')
+app.get('/forbidden', (req, res, next) => {
+    throw Fls.Forbidden403('My message', e)
 })
 
-app.use(FlareErrorRequestHandler({}))
+app.get('/forbidden', (req, res, next) => {
+    try {
+        throw new Error('Cause')
+    } catch (e) {
+        throw new Internal500('My custom message', e, { timestamp: Date.now() })
+    }
+})
+
+app.get('/wrap-non-flare', () => {
+    throw new Error('Not flare error')
+})
+
+app.use(FlareErrorRequestHandler({
+    onServerFlare: console.error,
+    wrapNonFlare: Internal500
+}))
+
 
 app.listen(8000)
 
