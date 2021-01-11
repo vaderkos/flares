@@ -21,7 +21,7 @@ const app = express()
 app.get('/not-found', ThrowErrorRequestHandler(NotFound404()))
 
 app.get('/forbidden', (req, res, next) => {
-    throw Fls.Forbidden403('My message', e)
+    throw Fls.Forbidden403('My message')
 })
 
 app.get('/forbidden', (req, res, next) => {
