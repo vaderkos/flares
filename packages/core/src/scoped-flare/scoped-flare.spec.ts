@@ -11,7 +11,7 @@ describe('ScopedFlare', () => {
     const callDummy = () => ScopedFlare(dummyCode, dummyText)
 
     describe('ScopedFlare()', () => {
-        it('Should bew newable', () => {
+        it('Should be newable', () => {
             expect(newDummy()).instanceof(ScopedFlare)
         })
 

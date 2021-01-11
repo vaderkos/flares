@@ -26,13 +26,12 @@ export interface FlareErrorRequestHandlerOptions {
 
     /**
      * Maps response before sending it via {@link Response.send}
-     * If not specified flare is mapped using {@link SerializableFlare}
-     * Note that flare argument here is already been mapped via {@link FlareErrorRequestHandlerOptions.mapFlare}
+     * @see {SerializableFlare} if you want to have flare fully serializable
      */
     mapResponseBody?: (flare: AnyFlare) => any | Promise<any>
 
     /**
-     * Is asynchronously called after mapping flare
+     * Is asynchronously called when flare is handled
      * @param flare
      */
     onFlare?: (flare: AnyFlare) => any
@@ -50,7 +49,7 @@ export interface FlareErrorRequestHandlerOptions {
     onSuccessFlare?: (flare: AnyFlare) => any
 
     /**
-     * Is asynchronously called after mapping flare, if flare is redirect
+     * Is asynchronously called if flare is redirect
      * @param flare
      */
     onRedirectFlare?: (flare: AnyFlare) => any

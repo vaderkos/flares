@@ -22,7 +22,7 @@ describe('SerializableFlare', () => {
             'stack',
             'cause'
         )
-        expect(ser).to.not.include.all.keys(
+        expect(ser).to.not.include.any.keys(
             'statusCode',
             'statusText',
             'data'
@@ -57,7 +57,7 @@ describe('SerializableFlare', () => {
             'stack',
             'cause'
         )
-        expect(ser).to.not.include.all.keys(
+        expect(ser).to.not.include.any.keys(
             'statusCode',
             'statusText',
             'data'
@@ -70,7 +70,7 @@ describe('SerializableFlare', () => {
             'cause'
         )
 
-        expect(ser?.cause).to.not.include.all.keys(
+        expect(ser?.cause).to.not.include.any.keys(
             'statusCode',
             'statusText',
             'data'
