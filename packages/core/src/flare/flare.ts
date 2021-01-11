@@ -1,6 +1,8 @@
 import { inherits } from 'util'
 
-import { Non, Nullable } from '../toolkit'
+import { Non, Nullable} from '../misc'
+import { defineStaticMethods, isStatusCodePropInRange, assertArgType } from '../toolkit'
+
 import { ScopedFlare } from '../scoped-flare'
 import { SerializableFlare } from '../serializable-flare'
 
@@ -37,16 +39,41 @@ export function isFlare <
 }
 
 /**
+ * Checks whether {@link Flare} instance has Information status code (100 <= status code < 200)
+ */
+export const isInfoFlare = isStatusCodePropInRange(100, 200)
+
+/**
+ * Checks whether {@link Flare} instance has Information status code (200 <= status code < 300)
+ */
+export const isSuccessFlare = isStatusCodePropInRange(200, 300)
+
+/**
+ * Checks whether {@link Flare} instance has Redirect status code (300 <= status code < 400)
+ */
+export const isRedirectFlare = isStatusCodePropInRange(300, 400)
+
+/**
+ * Checks whether {@link Flare} instance has Client error status code (400 <= status code < 500)
+ */
+export const isClientFlare = isStatusCodePropInRange(400, 500)
+
+/**
+ * Checks whether {@link Flare} instance has Server error status code (500 <= status code < 600)
+ */
+export const isServerFlare = isStatusCodePropInRange(500, 600)
+
+/**
  * Checks if {@param value} is assignable to {@link Flare.message} parameter
  */
-export function isMessage (value: unknown): value is string {
+export function isFlareMessage (value: unknown): value is string {
     return typeof value === 'string'
 }
 
 /**
  * Checks if {@param value} is assignable to {@link Flare.cause} parameter
  */
-export function isCause (value: unknown): value is Nullable<Error> {
+export function isFlareCause (value: unknown): value is Nullable<Error> {
     return value === null
         || (typeof value === 'object' && value instanceof Error)
 }
@@ -54,8 +81,8 @@ export function isCause (value: unknown): value is Nullable<Error> {
 /**
  * Checks if {@param value} is assignable to {@link Flare.data} parameter
  */
-export function isData (value: unknown): value is Non<Error, object> {
-    return typeof value === 'object' && !isCause(value)
+export function isFlareData (value: unknown): value is Non<Error, object> {
+    return typeof value === 'object' && !isFlareCause(value)
 }
 
 export interface CallableFlareConstructor {
@@ -231,21 +258,6 @@ export interface NewableFlareConstructor {
 }
 
 /**
- * Callable/newable function
- * that produces new {@link Flare} instance
- */
-export interface FlareConstructor extends CallableFlareConstructor, NewableFlareConstructor {
-    name: 'Flare'
-
-    isMessage:    typeof isMessage
-    isCause:      typeof isCause
-    isData:       typeof isData
-    isFlare:      typeof isFlare
-    serializable: typeof SerializableFlare
-    scoped:       typeof ScopedFlare
-}
-
-/**
  * Implementation of both {@link Flare} and {@link FlareConstructor}
  * @see {Flare}
  * @see {FlareConstructor}
@@ -259,9 +271,12 @@ export const FlareConstructor: FlareConstructor = function Flare (...args: Param
 
     const [statusCode, statusText, ...unordered] = args
 
-    const message = unordered.find(isMessage) ?? ''
-    const cause = unordered.find(isCause) ?? null
-    const data = unordered.find(isData) ?? {}
+    assertArgType(statusCode, 'statusCode', 'number')
+    assertArgType(statusText, 'statusText', 'string')
+
+    const message = unordered.find(isFlareMessage) ?? ''
+    const cause = unordered.find(isFlareCause) ?? null
+    const data = unordered.find(isFlareData) ?? {}
 
     Error.call(flare, message)
     Error.captureStackTrace(flare, new.target ?? Flare)
@@ -310,37 +325,42 @@ Object.defineProperties(FlareConstructor.prototype, {
     }
 })
 
-/* Add methods from FlareConstructor */
-Object.defineProperties(FlareConstructor, {
-    isFlare: {
-        configurable: true,
-        enumerable: false,
-        writable: true,
-        value: isFlare
-    },
-    isMessage: {
-        configurable: true,
-        enumerable: false,
-        writable: true,
-        value: isMessage
-    },
-    isData: {
-        configurable: true,
-        enumerable: false,
-        writable: true,
-        value: isData
-    },
-    isCause: {
-        configurable: true,
-        enumerable: false,
-        writable: true,
-        value: isCause
-    }
+/**
+ * Callable/newable function
+ * that produces new {@link Flare} instance
+ */
+export interface FlareConstructor extends CallableFlareConstructor, NewableFlareConstructor {
+    name: 'Flare'
+
+    isFlare:      typeof isFlare
+    serializable: typeof SerializableFlare
+    scoped:       typeof ScopedFlare
+
+    isFlareMessage: typeof isFlareMessage
+    isFlareCause:   typeof isFlareCause
+    isFlareData:    typeof isFlareData
+
+    isInfoFlare:     typeof isInfoFlare
+    isSuccessFlare:  typeof isSuccessFlare
+    isRedirectFlare: typeof isRedirectFlare
+    isClientFlare:   typeof isClientFlare
+    isServerFlare:   typeof isServerFlare
+}
+
+defineStaticMethods(FlareConstructor, {
+    isFlare,
+
+    isFlareMessage,
+    isFlareData,
+    isFlareCause,
+
+    isInfoFlare,
+    isSuccessFlare,
+    isRedirectFlare,
+    isClientFlare,
+    isServerFlare
 })
 
 export const Flare = FlareConstructor
 
-
-
-
-
+export type AnyFlare = Flare<number, string, string, object, Nullable<Error>>

@@ -1,7 +1,8 @@
 import { inherits } from 'util'
 
 import { Flare } from '../flare'
-import { Non, Nullable } from '../toolkit'
+import { Non, Nullable } from '../misc'
+import { assertArgType, defineStaticMethods, isStatusCodePropInRange } from '../toolkit'
 
 export interface NewableScopedFlare<SC extends number, ST extends string> {
     new <
@@ -101,6 +102,12 @@ export interface ScopedFlareConstructor {
 
     isScopedFlare: typeof isScopedFlare
 
+    isInfoScopedFlare:     typeof isInfoScopedFlare
+    isSuccessScopedFlare:  typeof isSuccessScopedFlare
+    isRedirectScopedFlare: typeof isRedirectScopedFlare
+    isClientScopedFlare:   typeof isClientScopedFlare
+    isServerScopedFlare:   typeof isServerScopedFlare
+
     <SC extends number, ST extends string>(
         statusCode: SC,
         statusText: ST
@@ -123,6 +130,9 @@ const ScopedFlareConstructor: ScopedFlareConstructor = function ScopedFlare <
     if (!new.target) {
         return new ScopedFlareConstructor(statusCode, statusText)
     }
+
+    assertArgType(statusCode, 'statusCode', 'number')
+    assertArgType(statusText, 'statusText', 'string')
 
     const instance = function <
         M extends string = '',
@@ -172,6 +182,47 @@ export function isScopedFlare <
     return typeof value === 'function' && value instanceof ScopedFlareConstructor
 }
 
+/**
+ * Checks whether {@link ScopedFlare} function creates Flare
+ * that has Information status code (100 <= status code < 200)
+ */
+export const isInfoScopedFlare = isStatusCodePropInRange(100, 200)
+
+/**
+ * Checks whether {@link ScopedFlare} function creates Flare
+ * that has Information status code (200 <= status code < 300)
+ */
+export const isSuccessScopedFlare = isStatusCodePropInRange(200, 300)
+
+/**
+ * Checks whether {@link ScopedFlare} function creates Flare
+ * that has Redirect status code (300 <= status code < 400)
+ */
+export const isRedirectScopedFlare = isStatusCodePropInRange(300, 400)
+
+/**
+ * Checks whether {@link ScopedFlare} function creates Flare
+ * that has Client error status code (400 <= status code < 500)
+ */
+export const isClientScopedFlare = isStatusCodePropInRange(400, 500)
+
+/**
+ * Checks whether {@link ScopedFlare} function create Flare
+ * that has Server error status code (500 <= status code < 600)
+ */
+export const isServerScopedFlare = isStatusCodePropInRange(500, 600)
+
+defineStaticMethods(ScopedFlareConstructor, {
+    isScopedFlare,
+    isInfoScopedFlare,
+    isSuccessScopedFlare,
+    isRedirectScopedFlare,
+    isClientScopedFlare,
+    isServerScopedFlare
+})
+
 ScopedFlareConstructor.isScopedFlare = isScopedFlare
 
 export const ScopedFlare = ScopedFlareConstructor
+
+export type AnyScopedFlare = ScopedFlare<number, string>

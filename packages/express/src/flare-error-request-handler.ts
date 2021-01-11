@@ -1,13 +1,18 @@
 import { ErrorRequestHandler } from 'express'
 import {
     isFlare,
+    isFlareCause,
+    isFlareData,
+    isFlareMessage,
+    isInfoFlare,
+    isSuccessFlare,
+    isRedirectFlare,
+    isClientFlare,
+    isServerFlare,
     isScopedFlare,
-    isMessage,
-    isData,
-    isCause,
     SerializableFlare,
     AnyScopedFlare,
-    AnyFlare,
+    AnyFlare
 } from '@flares/core'
 
 import { AsyncErrorRequestHandler } from './express-toolkit'
@@ -20,24 +25,61 @@ export interface FlareErrorRequestHandlerOptions {
     wrapNonFlare?: AnyScopedFlare | ((err: any) => AnyFlare | Promise<AnyFlare>)
 
     /**
-     * Maps handled {@link Flare} into another Flare
-     * If not specified flare is not mapped
-     */
-    mapFlare?: (flare: AnyFlare) => AnyFlare | Promise<AnyFlare>
-
-    /**
      * Maps response before sending it via {@link Response.send}
      * If not specified flare is mapped using {@link SerializableFlare}
      * Note that flare argument here is already been mapped via {@link FlareErrorRequestHandlerOptions.mapFlare}
      */
-    mapResponseBody?: <O>(flare: AnyFlare) => O | Promise<O>
+    mapResponseBody?: (flare: AnyFlare) => any | Promise<any>
+
+    /**
+     * Is asynchronously called after mapping flare
+     * @param flare
+     */
+    onFlare?: (flare: AnyFlare) => any
+
+    /**
+     * Is asynchronously called if flare is info
+     * @param flare
+     */
+    onInfoFlare?: (flare: AnyFlare) => any
+
+    /**
+     * Is asynchronously called if flare is success
+     * @param flare
+     */
+    onSuccessFlare?: (flare: AnyFlare) => any
+
+    /**
+     * Is asynchronously called after mapping flare, if flare is redirect
+     * @param flare
+     */
+    onRedirectFlare?: (flare: AnyFlare) => any
+
+    /**
+     * Is asynchronously called if flare is client error
+     * @param flare
+     */
+    onClientFlare?: (flare: AnyFlare) => any
+
+    /**
+     * Is asynchronously called if flare is server error
+     * @param flare
+     */
+    onServerFlare?: (flare: AnyFlare) => any
 }
 
 export function FlareErrorRequestHandler (options: FlareErrorRequestHandlerOptions): ErrorRequestHandler {
 
-    const { wrapNonFlare } = options
+    const {
+        wrapNonFlare,
+        onFlare,
+        onInfoFlare,
+        onSuccessFlare,
+        onRedirectFlare,
+        onClientFlare,
+        onServerFlare
+    } = options
 
-    const mapFlare = options.mapFlare ?? (_ => _)
     const mapResponseBody = options.mapResponseBody ?? SerializableFlare
 
     const toFlare = async (err: any) => {
@@ -51,16 +93,48 @@ export function FlareErrorRequestHandler (options: FlareErrorRequestHandlerOptio
         }
 
         if (isScopedFlare(wrapNonFlare)) {
-            if (!isMessage(err) && !isData(err) && !isCause(err)) {
+            if (
+                !isFlareMessage(err)
+                && !isFlareData(err)
+                && !isFlareCause(err)
+            ) {
                 throw new TypeError(`${wrapNonFlare.name} function called with wrong argument type ${typeof err}`)
             }
 
             return wrapNonFlare!!(err as any)
         }
 
+        /* Warning!!! check before toFlare call if it exists */
         return wrapNonFlare!!(err)
     }
 
+    const on = (flare: AnyFlare): void => {
+        if (!!onFlare) {
+            setImmediate(() => onFlare(flare))
+        }
+
+        if (!!onInfoFlare && isInfoFlare(flare)) {
+            setImmediate(() => onInfoFlare(flare))
+        }
+
+        if (!!onSuccessFlare && isSuccessFlare(flare)) {
+            setImmediate(() => onSuccessFlare(flare))
+        }
+
+        if (!!onRedirectFlare && isRedirectFlare(flare)) {
+            setImmediate(() => onRedirectFlare(flare))
+        }
+
+        if (!!onClientFlare && isClientFlare(flare)) {
+            setImmediate(() => onClientFlare(flare))
+        }
+
+        if (!!onServerFlare && isServerFlare(flare)) {
+            setImmediate(() => onServerFlare(flare))
+        }
+    }
+
+    const shouldOn = !!(onFlare || onInfoFlare || onSuccessFlare || onRedirectFlare || onClientFlare || onServerFlare)
 
     return AsyncErrorRequestHandler(async (err, _req, res, next): Promise<void> => {
         if (!isFlare(err) && !isScopedFlare(err) && !wrapNonFlare) {
@@ -68,9 +142,11 @@ export function FlareErrorRequestHandler (options: FlareErrorRequestHandlerOptio
             return
         }
 
-        err = toFlare(err)
+        const flare = await toFlare(err)
 
-        const flare = await mapFlare(err)
+        if (shouldOn) {
+            on(flare)
+        }
 
         res
             .status(flare.statusCode)

@@ -1,6 +1,3 @@
-import { Flare } from './flare'
-import { ScopedFlare } from './scoped-flare'
-
 export type Nullable<T> = null | T
 
 /**
@@ -15,7 +12,3 @@ export type Nullable<T> = null | T
  * type NonDogAnimal = Non<Dog, Animal>
  */
 export type Non<N, T> = Exclude<T, N>
-
-export type AnyFlare = Flare<number, string, string, object, Nullable<Error>>
-
-export type AnyScopedFlare = ScopedFlare<number, string>

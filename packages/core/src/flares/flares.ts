@@ -1,5 +1,6 @@
 import { isScopedFlare, ScopedFlare } from '../scoped-flare'
 import { Statuses } from '../statuses'
+import { assertArgType, defineStaticMethods } from '../toolkit'
 
 export type Flares<S extends Statuses> = {
     [K in keyof S]: ScopedFlare<S[K][0], S[K][1]>
@@ -35,6 +36,8 @@ export const FlaresConstructor: FlaresConstructor = function Flares<S extends St
         return new FlaresConstructor(statuses)
     }
 
+    assertArgType(statuses, 'statuses', 'object')
+
     const flares = this
 
     for (const [method, [statusCode, statusText]] of Object.entries(statuses)) {
@@ -44,7 +47,7 @@ export const FlaresConstructor: FlaresConstructor = function Flares<S extends St
     return flares
 } as FlaresConstructor
 
-FlaresConstructor.isFlares = isFlares
+defineStaticMethods(FlaresConstructor, { isFlares })
 
 export const Flares = FlaresConstructor
 

@@ -1,4 +1,4 @@
-import { Nullable } from '../toolkit'
+import { Nullable } from '../misc'
 
 import { Flare } from '../flare'
 

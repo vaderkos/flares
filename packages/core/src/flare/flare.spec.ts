@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
-import { Nullable } from '../toolkit'
+import { Nullable } from '../misc'
 import { Flare } from './flare'
 
 describe('Flare', () => {
@@ -216,9 +216,9 @@ describe('Flare', () => {
             })
         }
 
-        test(Flare.isMessage, decline, ['', 'text'])
-        test(Flare.isCause, decline, [null, new Error(), new SyntaxError(), new (class E extends Error {})()])
-        test(Flare.isData, decline, [{}, { a: 1 }, [], [1, 2, 3], new (class T {})()])
+        test(Flare.isFlareMessage, decline, ['', 'text'])
+        test(Flare.isFlareCause, decline, [null, new Error(), new SyntaxError(), new (class E extends Error {})()])
+        test(Flare.isFlareData, decline, [{}, { a: 1 }, [], [1, 2, 3], new (class T {})()])
 
         test(Flare.isFlare, decline, [
             newDummy(),
