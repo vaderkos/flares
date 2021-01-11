@@ -10,7 +10,6 @@ import {
     isClientFlare,
     isServerFlare,
     isScopedFlare,
-    SerializableFlare,
     AnyScopedFlare,
     AnyFlare
 } from '@flares/core'
@@ -79,7 +78,7 @@ export function FlareErrorRequestHandler (options: FlareErrorRequestHandlerOptio
         onServerFlare
     } = options
 
-    const mapResponseBody = options.mapResponseBody ?? SerializableFlare
+    const mapResponseBody = options.mapResponseBody ?? (_ => _)
 
     const toFlare = async (err: any) => {
         if (isFlare(err)) {
