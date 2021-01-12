@@ -1,0 +1,11 @@
+.git
+.vscode
+.idea
+
+.nyc_output
+
+node_modules
+**/node_modules
+**/dist
+
+lerna-debug.log
