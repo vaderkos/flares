@@ -1,5 +1,7 @@
 # 🧨🔥 Flares  - Highly customizable Typescript status code library 
 
+## Prerequisites
+- `Typescript >= 4.0`
 
 ## Integrations
 - [Express](https://github.com/vaderkos/flares/tree/develop/packages/express)
