@@ -1,12 +1,13 @@
 import { CodeStatuses as S } from '../code-statuses'
 
-export type UpperSnakeCaseStatuses = typeof UpperSnakeCaseStatuses
-
-export const UpperSnakeCaseStatuses = {
+export const UpperSnakeCaseInfoStatuses = {
     CONTINUE:                        S[100],
     SWITCHING_PROTOCOLS:             S[101],
     PROCESSING:                      S[102],
     EARLY_HINTS:                     S[103],
+} as const
+
+export const UpperSnakeCaseSuccessStatuses = {
     OK:                              S[200],
     CREATED:                         S[201],
     ACCEPTED:                        S[202],
@@ -17,6 +18,10 @@ export const UpperSnakeCaseStatuses = {
     MULTI_STATUS:                    S[207],
     ALREADY_REPORTED:                S[208],
     IM_USED:                         S[226],
+    USED:                            S[226],
+} as const
+
+export const UpperSnakeCaseRedirectStatuses = {
     MULTIPLE_CHOICES:                S[300],
     MOVED_PERMANENTLY:               S[301],
     FOUND:                           S[302],
@@ -26,6 +31,9 @@ export const UpperSnakeCaseStatuses = {
     SWITCH_PROXY:                    S[306],
     TEMPORARY_REDIRECT:              S[307],
     PERMANENT_REDIRECT:              S[308],
+} as const
+
+export const UpperSnakeCaseClientStatuses = {
     BAD_REQUEST:                     S[400],
     UNAUTHORIZED:                    S[401],
     PAYMENT_REQUIRED:                S[402],
@@ -45,6 +53,7 @@ export const UpperSnakeCaseStatuses = {
     RANGE_NOT_SATISFIABLE:           S[416],
     EXPECTATION_FAILED:              S[417],
     IM_A_TEAPOT:                     S[418],
+    TEAPOT:                          S[418],
     MISDIRECTED_REQUEST:             S[421],
     UNPROCESSABLE_ENTITY:            S[422],
     LOCKED:                          S[423],
@@ -55,6 +64,10 @@ export const UpperSnakeCaseStatuses = {
     TOO_MANY_REQUESTS:               S[429],
     REQUEST_HEADER_FIELDS_TOO_LARGE: S[431],
     UNAVAILABLE_FOR_LEGAL_REASONS:   S[451],
+} as const
+
+export const UpperSnakeCaseServerStatuses = {
+    INTERNAL:                        S[500],
     INTERNAL_SERVER_ERROR:           S[500],
     NOT_IMPLEMENTED:                 S[501],
     BAD_GATEWAY:                     S[502],
@@ -66,8 +79,19 @@ export const UpperSnakeCaseStatuses = {
     LOOP_DETECTED:                   S[508],
     NOT_EXTENDED:                    S[510],
     NETWORK_AUTHENTICATION_REQUIRED: S[511],
-
-    USED:                            S[226],
-    TEAPOT:                          S[418],
-    INTERNAL:                        S[500],
 } as const
+
+export const UpperSnakeCaseStatuses = {
+    ...UpperSnakeCaseInfoStatuses,
+    ...UpperSnakeCaseSuccessStatuses,
+    ...UpperSnakeCaseRedirectStatuses,
+    ...UpperSnakeCaseClientStatuses,
+    ...UpperSnakeCaseServerStatuses,
+} as const
+
+export type UpperSnakeCaseInfoStatuses = typeof UpperSnakeCaseInfoStatuses
+export type UpperSnakeCaseSuccessStatuses = typeof UpperSnakeCaseSuccessStatuses
+export type UpperSnakeCaseRedirectStatuses = typeof UpperSnakeCaseRedirectStatuses
+export type UpperSnakeCaseClientStatuses = typeof UpperSnakeCaseClientStatuses
+export type UpperSnakeCaseServerStatuses = typeof UpperSnakeCaseServerStatuses
+export type UpperSnakeCaseStatuses = typeof UpperSnakeCaseStatuses

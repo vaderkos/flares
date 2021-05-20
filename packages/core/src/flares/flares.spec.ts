@@ -15,7 +15,7 @@ describe('Flares', () => {
     const newDummy = () => new Flares(dummyStatuses)
     const callDummy = () => Flares(dummyStatuses)
 
-    describe('Flares()', () => {
+    describe(`${Flares.name}()`, () => {
         it('Should be callable', () => {
             expect(callDummy()).instanceof(Flares)
         })
@@ -25,18 +25,18 @@ describe('Flares', () => {
         })
     })
 
-    describe('Flares instance', () => {
+    describe(`${Flares.name} instance`, () => {
         it('Should be of object type', () => {
             expect(newDummy()).to.be.an('object')
         })
 
-        it('Should be instance of Flares', () => {
+        it(`Should be instance of ${Flares.name}`, () => {
             expect(newDummy()).instanceof(Flares)
         })
     })
 
-    describe('Flares.isFlares()', () => {
-        it('Should be of Flares type', () => {
+    describe(`${Flares.name}.${Flares.isFlares.name}()`, () => {
+        it(`Should be of ${Flares.name} type`, () => {
             expect(Flares.isFlares(newDummy())).to.be.true
 
             expect(Flares.isFlares(Flares({}))).to.be.true
@@ -49,7 +49,7 @@ describe('Flares', () => {
 
         })
 
-        it('Should not be of Flares type', () => {
+        it(`Should not be of ${Flares.name} type`, () => {
             expect(Flares.isFlares({
                 other: 'other',
                 zero: ScopedFlare(0, '')

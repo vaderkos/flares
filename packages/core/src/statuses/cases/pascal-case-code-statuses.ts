@@ -1,12 +1,13 @@
 import { CodeStatuses as S } from '../code-statuses'
 
-export type PascalCaseCodeStatuses = typeof PascalCaseCodeStatuses
-
-export const PascalCaseCodeStatuses = {
+export const PascalCaseCodeInfoStatuses = {
     Continue100:                      S[100],
     SwitchingProtocols101:            S[101],
     Processing102:                    S[102],
     EarlyHints103:                    S[103],
+} as const
+
+export const PascalCaseCodeSuccessStatuses = {
     Ok200:                            S[200],
     Created201:                       S[201],
     Accepted202:                      S[202],
@@ -17,6 +18,10 @@ export const PascalCaseCodeStatuses = {
     MultiStatus207:                   S[207],
     AlreadyReported208:               S[208],
     ImUsed226:                        S[226],
+    Used226:                          S[226],
+} as const
+
+export const PascalCaseCodeRedirectStatuses = {
     MultipleChoices300:               S[300],
     MovedPermanently301:              S[301],
     Found302:                         S[302],
@@ -26,6 +31,9 @@ export const PascalCaseCodeStatuses = {
     SwitchProxy306:                   S[306],
     TemporaryRedirect307:             S[307],
     PermanentRedirect308:             S[308],
+} as const
+
+export const PascalCaseCodeClientStatuses = {
     BadRequest400:                    S[400],
     Unauthorized401:                  S[401],
     PaymentRequired402:               S[402],
@@ -44,6 +52,7 @@ export const PascalCaseCodeStatuses = {
     UnsupportedMediaType415:          S[415],
     RangeNotSatisfiable416:           S[416],
     ExpectationFailed417:             S[417],
+    Teapot418:                        S[418],
     ImATeapot418:                     S[418],
     MisdirectedRequest421:            S[421],
     UnprocessableEntity422:           S[422],
@@ -55,6 +64,10 @@ export const PascalCaseCodeStatuses = {
     TooManyRequests429:               S[429],
     RequestHeaderFieldsTooLarge431:   S[431],
     UnavailableForLegalReasons451:    S[451],
+} as const
+
+export const PascalCaseCodeServerStatuses = {
+    Internal500:                      S[500],
     InternalServerError500:           S[500],
     NotImplemented501:                S[501],
     BadGateway502:                    S[502],
@@ -66,8 +79,19 @@ export const PascalCaseCodeStatuses = {
     LoopDetected508:                  S[508],
     NotExtended510:                   S[510],
     NetworkAuthenticationRequired511: S[511],
-
-    Used226:                          S[226],
-    Teapot418:                        S[418],
-    Internal500:                      S[500],
 } as const
+
+export const PascalCaseCodeStatuses = {
+    ...PascalCaseCodeInfoStatuses,
+    ...PascalCaseCodeSuccessStatuses,
+    ...PascalCaseCodeRedirectStatuses,
+    ...PascalCaseCodeClientStatuses,
+    ...PascalCaseCodeServerStatuses,
+} as const
+
+export type PascalCaseCodeInfoStatuses = typeof PascalCaseCodeInfoStatuses
+export type PascalCaseCodeSuccessStatuses = typeof PascalCaseCodeSuccessStatuses
+export type PascalCaseCodeRedirectStatuses = typeof PascalCaseCodeRedirectStatuses
+export type PascalCaseCodeClientStatuses = typeof PascalCaseCodeClientStatuses
+export type PascalCaseCodeServerStatuses = typeof PascalCaseCodeServerStatuses
+export type PascalCaseCodeStatuses = typeof PascalCaseCodeStatuses

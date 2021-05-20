@@ -17,6 +17,67 @@ import {
     UpperDotCaseStatuses,
     UpperDashCaseStatuses,
     UpperSnakeCaseStatuses,
+
+    CamelCaseCodeInfoStatuses,
+    CamelCaseCodeSuccessStatuses,
+    CamelCaseCodeRedirectStatuses,
+    CamelCaseCodeClientStatuses,
+    CamelCaseCodeServerStatuses,
+
+    PascalCaseCodeInfoStatuses,
+    PascalCaseCodeSuccessStatuses,
+    PascalCaseCodeRedirectStatuses,
+    PascalCaseCodeClientStatuses,
+    PascalCaseCodeServerStatuses,
+
+    CamelCaseInfoStatuses,
+    CamelCaseSuccessStatuses,
+    CamelCaseRedirectStatuses,
+    CamelCaseClientStatuses,
+    CamelCaseServerStatuses,
+
+    PascalCaseInfoStatuses,
+    PascalCaseSuccessStatuses,
+    PascalCaseRedirectStatuses,
+    PascalCaseClientStatuses,
+    PascalCaseServerStatuses,
+
+    LowerDashCaseInfoStatuses,
+    LowerDashCaseSuccessStatuses,
+    LowerDashCaseRedirectStatuses,
+    LowerDashCaseClientStatuses,
+    LowerDashCaseServerStatuses,
+
+    LowerDotCaseInfoStatuses,
+    LowerDotCaseSuccessStatuses,
+    LowerDotCaseRedirectStatuses,
+    LowerDotCaseClientStatuses,
+    LowerDotCaseServerStatuses,
+
+    LowerSnakeCaseInfoStatuses,
+    LowerSnakeCaseSuccessStatuses,
+    LowerSnakeCaseRedirectStatuses,
+    LowerSnakeCaseClientStatuses,
+    LowerSnakeCaseServerStatuses,
+
+    UpperDashCaseInfoStatuses,
+    UpperDashCaseSuccessStatuses,
+    UpperDashCaseRedirectStatuses,
+    UpperDashCaseClientStatuses,
+    UpperDashCaseServerStatuses,
+
+    UpperDotCaseInfoStatuses,
+    UpperDotCaseSuccessStatuses,
+    UpperDotCaseRedirectStatuses,
+    UpperDotCaseClientStatuses,
+    UpperDotCaseServerStatuses,
+
+    UpperSnakeCaseInfoStatuses,
+    UpperSnakeCaseSuccessStatuses,
+    UpperSnakeCaseRedirectStatuses,
+    UpperSnakeCaseClientStatuses,
+    UpperSnakeCaseServerStatuses,
+
 } from './cases'
 
 describe('Statuses', () => {
@@ -60,7 +121,93 @@ describe('Statuses', () => {
         }
     })
 
-    describe('isStatuses()', () => {
+    describe('Every cased Statuses should have correct status codes', () => {
+        const getCodes = (statuses: Statuses) => Object.values(statuses).map(([code]) => code)
+
+        const isInRange = (startInclusive: number, endExclusive: number) =>
+            (statusCode: number) => statusCode >= startInclusive && statusCode < endExclusive
+
+        const statusesToTest = {
+            Info: [isInRange(100, 200), {
+                CamelCaseCodeInfoStatuses,
+                PascalCaseCodeInfoStatuses,
+                CamelCaseInfoStatuses,
+                PascalCaseInfoStatuses,
+                LowerDashCaseInfoStatuses,
+                LowerDotCaseInfoStatuses,
+                LowerSnakeCaseInfoStatuses,
+                UpperDashCaseInfoStatuses,
+                UpperDotCaseInfoStatuses,
+                UpperSnakeCaseInfoStatuses,
+            }],
+            Success: [isInRange(200, 300), {
+                CamelCaseCodeSuccessStatuses,
+                PascalCaseCodeSuccessStatuses,
+                CamelCaseSuccessStatuses,
+                PascalCaseSuccessStatuses,
+                LowerDashCaseSuccessStatuses,
+                LowerDotCaseSuccessStatuses,
+                LowerSnakeCaseSuccessStatuses,
+                UpperDashCaseSuccessStatuses,
+                UpperDotCaseSuccessStatuses,
+                UpperSnakeCaseSuccessStatuses,
+            }],
+            Redirect: [isInRange(300, 400), {
+                CamelCaseCodeRedirectStatuses,
+                PascalCaseCodeRedirectStatuses,
+                CamelCaseRedirectStatuses,
+                PascalCaseRedirectStatuses,
+                LowerDashCaseRedirectStatuses,
+                LowerDotCaseRedirectStatuses,
+                LowerSnakeCaseRedirectStatuses,
+                UpperDashCaseRedirectStatuses,
+                UpperDotCaseRedirectStatuses,
+                UpperSnakeCaseRedirectStatuses,
+
+            }],
+            Client: [isInRange(400, 500), {
+                CamelCaseCodeClientStatuses,
+                PascalCaseCodeClientStatuses,
+                CamelCaseClientStatuses,
+                PascalCaseClientStatuses,
+                LowerDashCaseClientStatuses,
+                LowerDotCaseClientStatuses,
+                LowerSnakeCaseClientStatuses,
+                UpperDashCaseClientStatuses,
+                UpperDotCaseClientStatuses,
+                UpperSnakeCaseClientStatuses,
+            }],
+            Server: [isInRange(500, 600), {
+                CamelCaseCodeServerStatuses,
+                PascalCaseCodeServerStatuses,
+                CamelCaseServerStatuses,
+                PascalCaseServerStatuses,
+                LowerDashCaseServerStatuses,
+                LowerDotCaseServerStatuses,
+                LowerSnakeCaseServerStatuses,
+                UpperDashCaseServerStatuses,
+                UpperDotCaseServerStatuses,
+                UpperSnakeCaseServerStatuses,
+            }]
+        } as const
+
+        for (const [statusType, [validate, statusesGroup]] of Object.entries(statusesToTest)) {
+            describe(`${statusType} statuses should have correct status code`, () => {
+
+                for (const [name, statuses] of Object.entries(statusesGroup)) {
+                    it(name, () => {
+                        expect(
+                            getCodes(statuses).every(validate),
+                            `Invalid ${statusType} status code`
+                        ).to.be.true
+                    })
+                }
+
+            })
+        }
+    })
+
+    describe(`${isStatuses.name}`, () => {
         it('Should be false', () => {
             expect(isStatuses(null)).to.be.false
             expect(isStatuses(undefined)).to.be.false

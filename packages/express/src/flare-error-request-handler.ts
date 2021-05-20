@@ -1,5 +1,8 @@
-import { ErrorRequestHandler } from 'express'
+import { ErrorRequestHandler, Request, Response } from 'express'
 import {
+    Flare,
+    ScopedFlare,
+    SerializableFlare,
     isFlare,
     isFlareCause,
     isFlareData,
@@ -11,7 +14,8 @@ import {
     isServerFlare,
     isScopedFlare,
     AnyScopedFlare,
-    AnyFlare
+    AnyFlare,
+    Awaitable
 } from '@flares/core'
 
 import { AsyncErrorRequestHandler } from './express-toolkit'
@@ -21,13 +25,13 @@ export interface FlareErrorRequestHandlerOptions {
      * Wraps errors that are not {@link Flare} using specified {@link ScopedFlare} function
      * If not specified, error is passed to the next request error handler
      */
-    wrapNonFlare?: AnyScopedFlare | ((err: any) => AnyFlare | Promise<AnyFlare>)
+    wrapNonFlare?: AnyScopedFlare | ((err: any) => Awaitable<AnyFlare>)
 
     /**
      * Maps response before sending it via {@link Response.send}
      * @see {SerializableFlare} if you want to have flare fully serializable
      */
-    mapResponseBody?: (flare: AnyFlare) => any | Promise<any>
+    mapResponseBody?: (flare: AnyFlare) => Awaitable<any>
 
     /**
      * Is asynchronously called when flare is handled
@@ -66,6 +70,10 @@ export interface FlareErrorRequestHandlerOptions {
     onServerFlare?: (flare: AnyFlare) => any
 }
 
+
+/**
+ * Creates express error request handler that handles everything connected with {@link Flare}
+ */
 export function FlareErrorRequestHandler (options: FlareErrorRequestHandlerOptions): ErrorRequestHandler {
 
     const {
@@ -152,5 +160,10 @@ export function FlareErrorRequestHandler (options: FlareErrorRequestHandlerOptio
     })
 }
 
+/**
+ * @alias {@link FlareErrorRequestHandler}
+ */
 export const FlareMiddleware = FlareErrorRequestHandler
+
+Object
 

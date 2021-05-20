@@ -1,7 +1,8 @@
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
-import { Nullable } from '../misc'
+import { Nullable } from '../internals'
+
 import { Flare } from './flare'
 
 describe('Flare', () => {

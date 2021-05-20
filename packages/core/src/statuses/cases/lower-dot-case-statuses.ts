@@ -1,12 +1,13 @@
 import { CodeStatuses as S } from '../code-statuses'
 
-export type LowerDotCaseStatuses = typeof LowerDotCaseStatuses
-
-export const LowerDotCaseStatuses = {
+export const LowerDotCaseInfoStatuses = {
     'continue':                         S[100],
     'switching.protocols':              S[101],
     'processing':                       S[102],
     'early.hints':                      S[103],
+} as const
+
+export const LowerDotCaseSuccessStatuses = {
     'ok':                               S[200],
     'created':                          S[201],
     'accepted':                         S[202],
@@ -17,6 +18,10 @@ export const LowerDotCaseStatuses = {
     'multi.status':                     S[207],
     'already.reported':                 S[208],
     'im.used':                          S[226],
+    'used':                             S[226],
+} as const
+
+export const LowerDotCaseRedirectStatuses = {
     'multiple.choices':                 S[300],
     'moved.permanently':                S[301],
     'found':                            S[302],
@@ -26,6 +31,9 @@ export const LowerDotCaseStatuses = {
     'switch.proxy':                     S[306],
     'temporary.redirect':               S[307],
     'permanent.redirect':               S[308],
+} as const
+
+export const LowerDotCaseClientStatuses = {
     'bad.request':                      S[400],
     'unauthorized':                     S[401],
     'payment.required':                 S[402],
@@ -45,6 +53,7 @@ export const LowerDotCaseStatuses = {
     'range.not.satisfiable':            S[416],
     'expectation.failed':               S[417],
     'im.a.teapot':                      S[418],
+    'teapot':                           S[418],
     'misdirected.request':              S[421],
     'unprocessable.entity':             S[422],
     'locked':                           S[423],
@@ -55,6 +64,10 @@ export const LowerDotCaseStatuses = {
     'too.many.requests':                S[429],
     'request.header.fields.too.large':  S[431],
     'unavailable.for.legal.reasons':    S[451],
+} as const
+
+export const LowerDotCaseServerStatuses = {
+    'internal':                         S[500],
     'internal.server.error':            S[500],
     'not.implemented':                  S[501],
     'bad.gateway':                      S[502],
@@ -66,8 +79,20 @@ export const LowerDotCaseStatuses = {
     'loop.detected':                    S[508],
     'not.extended':                     S[510],
     'network.authentication.required':  S[511],
-
-    'used':                             S[226],
-    'teapot':                           S[418],
-    'internal':                         S[500],
 } as const
+
+export const LowerDotCaseStatuses = {
+    ...LowerDotCaseInfoStatuses,
+    ...LowerDotCaseSuccessStatuses,
+    ...LowerDotCaseRedirectStatuses,
+    ...LowerDotCaseClientStatuses,
+    ...LowerDotCaseServerStatuses,
+} as const
+
+
+export type LowerDotCaseInfoStatuses = typeof LowerDotCaseInfoStatuses
+export type LowerDotCaseSuccessStatuses = typeof LowerDotCaseSuccessStatuses
+export type LowerDotCaseRedirectStatuses = typeof LowerDotCaseRedirectStatuses
+export type LowerDotCaseClientStatuses = typeof LowerDotCaseClientStatuses
+export type LowerDotCaseServerStatuses = typeof LowerDotCaseServerStatuses
+export type LowerDotCaseStatuses = typeof LowerDotCaseStatuses

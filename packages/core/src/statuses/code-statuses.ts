@@ -1,11 +1,11 @@
-export type CodeStatuses = typeof CodeStatuses
-
-export const CodeStatuses = {
+export const CodeInfoStatuses = {
     100: [100, 'Continue'],
     101: [101, 'Switching Protocols'],
     102: [102, 'Processing'],
-    103: [103, 'Early Hints'],
+    103: [103, 'Early Hints']
+} as const
 
+export const CodeSuccessStatuses = {
     200: [200, 'OK'],
     201: [201, 'Created'],
     202: [202, 'Accepted'],
@@ -16,7 +16,9 @@ export const CodeStatuses = {
     207: [207, 'Multi-Status'],
     208: [208, 'Already Reported'],
     226: [226, 'IM Used'],
+} as const
 
+export const CodeRedirectStatuses = {
     300: [300, 'Multiple Choices'],
     301: [301, 'Moved Permanently'],
     302: [302, 'Found'],
@@ -26,7 +28,9 @@ export const CodeStatuses = {
     306: [306, 'Switch Proxy'],
     307: [307, 'Temporary Redirect'],
     308: [308, 'Permanent Redirect'],
+} as const
 
+export const CodeClientStatuses = {
     400: [400, 'Bad Request'],
     401: [401, 'Unauthorized'],
     402: [402, 'Payment Required'],
@@ -56,7 +60,9 @@ export const CodeStatuses = {
     429: [429, 'Too Many Requests'],
     431: [431, 'Request Header Fields Too Large'],
     451: [451, 'Unavailable For Legal Reasons'],
+} as const
 
+export const CodeServerStatuses = {
     500: [500, 'Internal Server Error'],
     501: [501, 'Not Implemented'],
     502: [502, 'Bad Gateway'],
@@ -69,3 +75,18 @@ export const CodeStatuses = {
     510: [510, 'Not Extended'],
     511: [511, 'Network Authentication Required'],
 } as const
+
+export const CodeStatuses = {
+    ...CodeInfoStatuses,
+    ...CodeSuccessStatuses,
+    ...CodeRedirectStatuses,
+    ...CodeClientStatuses,
+    ...CodeServerStatuses
+} as const
+
+export type CodeInfoStatuses = typeof CodeInfoStatuses
+export type CodeSuccessStatuses = typeof CodeSuccessStatuses
+export type CodeRedirectStatuses = typeof CodeRedirectStatuses
+export type CodeClientStatuses = typeof CodeClientStatuses
+export type CodeServerStatuses = typeof CodeServerStatuses
+export type CodeStatuses = typeof CodeStatuses

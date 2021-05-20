@@ -1,12 +1,13 @@
 import { CodeStatuses as S } from '../code-statuses'
 
-export type CamelCaseStatuses = typeof CamelCaseStatuses
-
-export const CamelCaseStatuses = {
+export const CamelCaseInfoStatuses = {
     continue:                       S[100],
     switchingProtocols:             S[101],
     processing:                     S[102],
     earlyHints:                     S[103],
+} as const
+
+export const CamelCaseSuccessStatuses = {
     ok:                             S[200],
     created:                        S[201],
     accepted:                       S[202],
@@ -17,6 +18,10 @@ export const CamelCaseStatuses = {
     multiStatus:                    S[207],
     alreadyReported:                S[208],
     imUsed:                         S[226],
+    used:                           S[226],
+} as const
+
+export const CamelCaseRedirectStatuses = {
     multipleChoices:                S[300],
     movedPermanently:               S[301],
     found:                          S[302],
@@ -26,6 +31,9 @@ export const CamelCaseStatuses = {
     switchProxy:                    S[306],
     temporaryRedirect:              S[307],
     permanentRedirect:              S[308],
+} as const
+
+export const CamelCaseClientStatuses = {
     badRequest:                     S[400],
     unauthorized:                   S[401],
     paymentRequired:                S[402],
@@ -45,6 +53,7 @@ export const CamelCaseStatuses = {
     rangeNotSatisfiable:            S[416],
     expectationFailed:              S[417],
     imATeapot:                      S[418],
+    teapot:                         S[418],
     misdirectedRequest:             S[421],
     unprocessableEntity:            S[422],
     locked:                         S[423],
@@ -55,6 +64,10 @@ export const CamelCaseStatuses = {
     tooManyRequests:                S[429],
     requestHeaderFieldsTooLarge:    S[431],
     unavailableForLegalReasons:     S[451],
+} as const
+
+export const CamelCaseServerStatuses = {
+    internal:                       S[500],
     internalServerError:            S[500],
     notImplemented:                 S[501],
     badGateway:                     S[502],
@@ -66,9 +79,21 @@ export const CamelCaseStatuses = {
     loopDetected:                   S[508],
     notExtended:                    S[510],
     networkAuthenticationRequired:  S[511],
-
-    used:                           S[226],
-    teapot:                         S[418],
-    internal:                       S[500],
 } as const
+
+export const CamelCaseStatuses = {
+    ...CamelCaseInfoStatuses,
+    ...CamelCaseSuccessStatuses,
+    ...CamelCaseRedirectStatuses,
+    ...CamelCaseClientStatuses,
+    ...CamelCaseServerStatuses,
+} as const
+
+
+export type CamelCaseInfoStatuses = typeof CamelCaseInfoStatuses
+export type CamelCaseSuccessStatuses = typeof CamelCaseSuccessStatuses
+export type CamelCaseRedirectStatuses = typeof CamelCaseRedirectStatuses
+export type CamelCaseClientStatuses = typeof CamelCaseClientStatuses
+export type CamelCaseServerStatuses = typeof CamelCaseServerStatuses
+export type CamelCaseStatuses = typeof CamelCaseStatuses
 

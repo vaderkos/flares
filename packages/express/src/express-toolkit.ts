@@ -17,6 +17,11 @@ export function AsyncErrorRequestHandler<T> (errorHandler: AsyncErrorRequestHand
     }
 }
 
+/**
+ * Creates {@link RequestHandler} that throws specified error
+ * @param err
+ * @constructor
+ */
 export function ThrowErrorRequestHandler<E extends Error> (err: E): RequestHandler {
     return function (_req, _res, next): void {
         next(err)

@@ -1,12 +1,13 @@
 import { CodeStatuses as S } from '../code-statuses'
 
-export type UpperDashCaseStatuses = typeof UpperDashCaseStatuses
-
-export const UpperDashCaseStatuses = {
+export const UpperDashCaseInfoStatuses = {
     'CONTINUE':                        S[100],
     'SWITCHING-PROTOCOLS':             S[101],
     'PROCESSING':                      S[102],
     'EARLY-HINTS':                     S[103],
+} as const
+
+export const UpperDashCaseSuccessStatuses = {
     'OK':                              S[200],
     'CREATED':                         S[201],
     'ACCEPTED':                        S[202],
@@ -17,6 +18,10 @@ export const UpperDashCaseStatuses = {
     'MULTI-STATUS':                    S[207],
     'ALREADY-REPORTED':                S[208],
     'IM-USED':                         S[226],
+    'USED':                            S[226],
+} as const
+
+export const UpperDashCaseRedirectStatuses = {
     'MULTIPLE-CHOICES':                S[300],
     'MOVED-PERMANENTLY':               S[301],
     'FOUND':                           S[302],
@@ -26,6 +31,9 @@ export const UpperDashCaseStatuses = {
     'SWITCH-PROXY':                    S[306],
     'TEMPORARY-REDIRECT':              S[307],
     'PERMANENT-REDIRECT':              S[308],
+} as const
+
+export const UpperDashCaseClientStatuses = {
     'BAD-REQUEST':                     S[400],
     'UNAUTHORIZED':                    S[401],
     'PAYMENT-REQUIRED':                S[402],
@@ -45,6 +53,7 @@ export const UpperDashCaseStatuses = {
     'RANGE-NOT-SATISFIABLE':           S[416],
     'EXPECTATION-FAILED':              S[417],
     'IM-A-TEAPOT':                     S[418],
+    'TEAPOT':                          S[418],
     'MISDIRECTED-REQUEST':             S[421],
     'UNPROCESSABLE-ENTITY':            S[422],
     'LOCKED':                          S[423],
@@ -55,6 +64,10 @@ export const UpperDashCaseStatuses = {
     'TOO-MANY-REQUESTS':               S[429],
     'REQUEST-HEADER-FIELDS-TOO-LARGE': S[431],
     'UNAVAILABLE-FOR-LEGAL-REASONS':   S[451],
+} as const
+
+export const UpperDashCaseServerStatuses = {
+    'INTERNAL':                        S[500],
     'INTERNAL-SERVER-ERROR':           S[500],
     'NOT-IMPLEMENTED':                 S[501],
     'BAD-GATEWAY':                     S[502],
@@ -66,8 +79,19 @@ export const UpperDashCaseStatuses = {
     'LOOP-DETECTED':                   S[508],
     'NOT-EXTENDED':                    S[510],
     'NETWORK-AUTHENTICATION-REQUIRED': S[511],
-
-    'USED':                            S[226],
-    'TEAPOT':                          S[418],
-    'INTERNAL':                        S[500],
 } as const
+
+export const UpperDashCaseStatuses = {
+    ...UpperDashCaseInfoStatuses,
+    ...UpperDashCaseSuccessStatuses,
+    ...UpperDashCaseRedirectStatuses,
+    ...UpperDashCaseClientStatuses,
+    ...UpperDashCaseServerStatuses,
+} as const
+
+export type UpperDashCaseInfoStatuses = typeof UpperDashCaseInfoStatuses
+export type UpperDashCaseSuccessStatuses = typeof UpperDashCaseSuccessStatuses
+export type UpperDashCaseRedirectStatuses = typeof UpperDashCaseRedirectStatuses
+export type UpperDashCaseClientStatuses = typeof UpperDashCaseClientStatuses
+export type UpperDashCaseServerStatuses = typeof UpperDashCaseServerStatuses
+export type UpperDashCaseStatuses = typeof UpperDashCaseStatuses

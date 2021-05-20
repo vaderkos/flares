@@ -1,12 +1,13 @@
 import { CodeStatuses as S } from '../code-statuses'
 
-export type UpperDotCaseStatuses = typeof UpperDotCaseStatuses
-
-export const UpperDotCaseStatuses = {
+export const UpperDotCaseInfoStatuses = {
     'CONTINUE':                        S[100],
     'SWITCHING.PROTOCOLS':             S[101],
     'PROCESSING':                      S[102],
     'EARLY.HINTS':                     S[103],
+} as const
+
+export const UpperDotCaseSuccessStatuses = {
     'OK':                              S[200],
     'CREATED':                         S[201],
     'ACCEPTED':                        S[202],
@@ -17,6 +18,10 @@ export const UpperDotCaseStatuses = {
     'MULTI.STATUS':                    S[207],
     'ALREADY.REPORTED':                S[208],
     'IM.USED':                         S[226],
+    'USED':                            S[226],
+} as const
+
+export const UpperDotCaseRedirectStatuses = {
     'MULTIPLE.CHOICES':                S[300],
     'MOVED.PERMANENTLY':               S[301],
     'FOUND':                           S[302],
@@ -26,6 +31,9 @@ export const UpperDotCaseStatuses = {
     'SWITCH.PROXY':                    S[306],
     'TEMPORARY.REDIRECT':              S[307],
     'PERMANENT.REDIRECT':              S[308],
+} as const
+
+export const UpperDotCaseClientStatuses = {
     'BAD.REQUEST':                     S[400],
     'UNAUTHORIZED':                    S[401],
     'PAYMENT.REQUIRED':                S[402],
@@ -45,6 +53,7 @@ export const UpperDotCaseStatuses = {
     'RANGE.NOT.SATISFIABLE':           S[416],
     'EXPECTATION.FAILED':              S[417],
     'IM.A.TEAPOT':                     S[418],
+    'TEAPOT':                          S[418],
     'MISDIRECTED.REQUEST':             S[421],
     'UNPROCESSABLE.ENTITY':            S[422],
     'LOCKED':                          S[423],
@@ -55,6 +64,10 @@ export const UpperDotCaseStatuses = {
     'TOO.MANY.REQUESTS':               S[429],
     'REQUEST.HEADER.FIELDS.TOO.LARGE': S[431],
     'UNAVAILABLE.FOR.LEGAL.REASONS':   S[451],
+} as const
+
+export const UpperDotCaseServerStatuses = {
+    'INTERNAL':                        S[500],
     'INTERNAL.SERVER.ERROR':           S[500],
     'NOT.IMPLEMENTED':                 S[501],
     'BAD.GATEWAY':                     S[502],
@@ -66,8 +79,19 @@ export const UpperDotCaseStatuses = {
     'LOOP.DETECTED':                   S[508],
     'NOT.EXTENDED':                    S[510],
     'NETWORK.AUTHENTICATION.REQUIRED': S[511],
-
-    'USED':                            S[226],
-    'TEAPOT':                          S[418],
-    'INTERNAL':                        S[500],
 } as const
+
+export const UpperDotCaseStatuses = {
+    ...UpperDotCaseInfoStatuses,
+    ...UpperDotCaseSuccessStatuses,
+    ...UpperDotCaseRedirectStatuses,
+    ...UpperDotCaseClientStatuses,
+    ...UpperDotCaseServerStatuses,
+} as const
+
+export type UpperDotCaseInfoStatuses = typeof UpperDotCaseInfoStatuses
+export type UpperDotCaseSuccessStatuses = typeof UpperDotCaseSuccessStatuses
+export type UpperDotCaseRedirectStatuses = typeof UpperDotCaseRedirectStatuses
+export type UpperDotCaseClientStatuses = typeof UpperDotCaseClientStatuses
+export type UpperDotCaseServerStatuses = typeof UpperDotCaseServerStatuses
+export type UpperDotCaseStatuses = typeof UpperDotCaseStatuses

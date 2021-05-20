@@ -60,7 +60,7 @@
     "no-unsafe-negation": "error",
     "no-compare-neg-zero": "error",
     "valid-typeof": ["error", { "requireStringLiterals": true }],
-    "max-nested-callbacks": ["error", 4],
+    "max-nested-callbacks": ["warn", 5],
     "wrap-iife": ["error", "inside"],
     "unicorn/filename-case": ["error", {
       "case": "kebabCase"
@@ -97,7 +97,7 @@
     "@typescript-eslint/quotes": ["warn", "single"],
     "@typescript-eslint/no-use-before-define": "warn",
 
-    "@typescript-eslint/no-misused-new": "error",
+//    "@typescript-eslint/no-misused-new": "error",
     "@typescript-eslint/no-dupe-class-members": "error",
     "@typescript-eslint/no-useless-constructor": "error",
     "@typescript-eslint/restrict-plus-operands": "error"

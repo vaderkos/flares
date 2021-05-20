@@ -1,16 +1,17 @@
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
+import { Flare } from '../flare'
 import { ScopedFlare } from './scoped-flare'
 
-describe('ScopedFlare', () => {
+describe(ScopedFlare.name, () => {
     const dummyCode = 0
     const dummyText = 'Dummy text'
 
     const newDummy = () => new ScopedFlare(dummyCode, dummyText)
     const callDummy = () => ScopedFlare(dummyCode, dummyText)
 
-    describe('ScopedFlare()', () => {
+    describe(`${ScopedFlare.name}()`, () => {
         it('Should be newable', () => {
             expect(newDummy()).instanceof(ScopedFlare)
         })
@@ -28,7 +29,7 @@ describe('ScopedFlare', () => {
             expect(given).instanceof(ScopedFlare)
         })
 
-        describe('Allow any arguments order passed to instance of ScopedFlare', () => {
+        describe(`Allow any arguments order passed to instance of ${ScopedFlare.name}`, () => {
             class DummyError extends Error {}
 
             const message = 'Dummy message'
@@ -58,7 +59,7 @@ describe('ScopedFlare', () => {
             const isEmptyObject = (obj: object): boolean => Object.keys(obj).length === 0
 
             for (const [argsDefinition, { args, result }] of Object.entries(cases)) {
-                it(`new ScopedFlare(statusCode, statusText)(${argsDefinition})`, () => {
+                it(`new ${ScopedFlare.name}(statusCode, statusText)(${argsDefinition})`, () => {
                     const flare = (dummyScopedFlare as any)(...args)
 
                     dummyScopedFlare('adsasd')
@@ -78,7 +79,7 @@ describe('ScopedFlare', () => {
 
     })
 
-    describe('ScopedFlare instance', () => {
+    describe(`${ScopedFlare.name} instance`, () => {
 
         it('Should be of function type', () => {
             expect(newDummy()).to.be.a('function')
@@ -88,7 +89,7 @@ describe('ScopedFlare', () => {
             expect(newDummy()).instanceof(Function)
         })
 
-        it('Should be instance of ScopedFlare', () => {
+        it(`Should be instance of ${ScopedFlare.name}`, () => {
             expect(newDummy()).instanceof(ScopedFlare)
         })
 
@@ -108,11 +109,11 @@ describe('ScopedFlare', () => {
 
     })
 
-    describe('ScopedFlare.prototype.name', () => {
+    describe(`${ScopedFlare.name}.prototype.name`, () => {
 
         it('Should have proper value', () => {
             expect(newDummy()).to.deep.include({
-                name: `ScopedFlare<${dummyCode}, "${dummyText}">`
+                name: `${ScopedFlare.name}<${dummyCode}, "${dummyText}">`
             })
         })
 
@@ -126,43 +127,63 @@ describe('ScopedFlare', () => {
 
     })
 
-    describe('ScopedFlare produced Flare instance', () => {
+    describe(`${ScopedFlare.name} produced ${Flare.name} instance`, () => {
         it('Should have proper stacktrace without ScopedFlare constructor when is callable', () => {
             const { stack } = callDummy()()
 
-            expect(stack.split('\n')[1].includes('ScopedFlare.')).to.be.false
+            expect(stack.split('\n')[1].includes(`${ScopedFlare.name}.`)).to.be.false
         })
 
-        it('Should have proper stacktrace without ScopedFlare constructor when is newable', () => {
+        it(`Should have proper stacktrace without ${ScopedFlare.name} constructor when is newable`, () => {
             const { stack } = newDummy()()
 
             expect(stack.split('\n')[1].includes('ScopedFlare.')).to.be.false
         })
 
-        it('Should have proper stacktrace without inherited ScopedFlare constructor', () => {
+        it(`Should have proper stacktrace without inherited ${ScopedFlare.name} constructor`, () => {
             class Given extends ScopedFlare<number, string> {}
 
             const { stack } = (new Given(0, ''))()
 
             const firstTraceLine = stack.split('\n')[1]
 
-            expect(firstTraceLine.includes('ScopedFlare.')).to.be.false
-            expect(firstTraceLine.includes('Flare.')).to.be.false
-            expect(firstTraceLine.includes('Given.')).to.be.false
+            expect(firstTraceLine.includes(`${ScopedFlare.name}.`)).to.be.false
+            expect(firstTraceLine.includes(`${Flare.name}.`)).to.be.false
+            expect(firstTraceLine.includes(`${Given.name}.`)).to.be.false
         })
     })
 
-    describe('ScopedFlare.isScopedFlare()', () => {
-        it('Should be of ScopedFlare type', () => {
+    describe(`${ScopedFlare.name}.${ScopedFlare.isScopedFlare.name}()`, () => {
+        it(`Should be of ${ScopedFlare.name} type`, () => {
             expect(ScopedFlare.isScopedFlare(newDummy())).to.be.true
             expect(ScopedFlare.isScopedFlare(callDummy())).to.be.true
         })
 
-        it('Should not be of ScopedFlare type', () => {
+        it(`Should not be of ${ScopedFlare.name} type`, () => {
             /* Object.create gives you a variable of object primitive type so it cannot be callable */
             const given = Object.create(ScopedFlare.prototype)
 
             expect(ScopedFlare.isScopedFlare(given)).to.be.false
         })
+    })
+
+    describe(`${ScopedFlare.name}.${ScopedFlare.isInfoScopedFlare.name}()`, () => {
+
+    })
+
+    describe(`${ScopedFlare.name}.${ScopedFlare.isSuccessScopedFlare.name}()`, () => {
+
+    })
+
+    describe(`${ScopedFlare.name}.${ScopedFlare.isRedirectScopedFlare.name}()`, () => {
+
+    })
+
+    describe(`${ScopedFlare.name}.${ScopedFlare.isClientScopedFlare.name}()`, () => {
+
+    })
+
+    describe(`${ScopedFlare.name}.${ScopedFlare.isServerScopedFlare.name}()`, () => {
+
     })
 })
