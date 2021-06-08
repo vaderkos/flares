@@ -17,7 +17,7 @@ export interface SerializableFlare {
 }
 
 /**
- * Converts anything of {@link Nullable<Error>} type
+ * Converts anything of {@link Nullable<ErrorLike>} type
  * to {@link SerializableFlare} that is plain object with all Flare properties recursively enumerable
  * Result can be fully serialized with {@link JSON.stringify}
  */

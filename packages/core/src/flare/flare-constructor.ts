@@ -1,9 +1,9 @@
 import { Non, Nullable } from '../internals'
 
 import { Flare } from './flare'
-import { ErrorLike } from './error-like'
+import { ErrorLike } from '../error-like'
 import { FlareLike } from './flare-like'
-import { FlareToolkit } from './flare-toolkit'
+import { FlareExtras } from './flare-extras'
 
 export interface CallableFlareConstructor {
     <
@@ -12,7 +12,7 @@ export interface CallableFlareConstructor {
         M  extends string = '',
         D  extends object = {},
         C  extends Nullable<ErrorLike> = null,
-    > (flareLike: FlareLike<SC, ST, M, D, C>): Flare<SC, ST, M, D, C>
+    > (flareLike: FlareLike<SC, ST, FlareExtras<M, D, C>>): Flare<SC, ST, M, D, C>
 
     <
         SC extends number = number,
@@ -108,7 +108,7 @@ export interface NewableFlareConstructor {
         M  extends string = '',
         D  extends object = {},
         C  extends Nullable<ErrorLike> = null,
-    > (flareLike: FlareLike<SC, ST, M, D, C>): Flare<SC, ST, M, D, C>
+    > (flareLike: FlareLike<SC, ST, FlareExtras<M, D, C>>): Flare<SC, ST, M, D, C>
 
     new <
         SC extends number = number,
@@ -196,9 +196,14 @@ export interface NewableFlareConstructor {
 }
 
 /**
- * Callable/newable function
- * that produces new {@link Flare} instance
+ * Newable, callable {@link Flare} constructor
  */
-export interface FlareConstructor extends CallableFlareConstructor, NewableFlareConstructor, FlareToolkit {
+export interface FlareConstructor extends CallableFlareConstructor, NewableFlareConstructor {
     name: 'Flare'
+    // isFlare (value: unknown): boolean
+    // isInfoFlare (value: unknown): boolean
+    // isRedirectFlare (value: unknown): boolean
+    // isSuccessFlare (value: unknown): boolean
+    // isServerFlare (value: unknown): boolean
+    // isErrorFlare (value: unknown): boolean
 }

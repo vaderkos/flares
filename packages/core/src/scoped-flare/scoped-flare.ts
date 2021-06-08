@@ -1,197 +1,173 @@
-import { Flare, FlareExtras } from '../flare'
-import { Non, Nullable, Fn, isFn } from '../internals'
+import { Flare, AnyFlare, FlareExtras, AnyFlareExtras, isFlareExtras, isFlareLike } from '../flare'
+import { ErrorLike } from '../error-like'
+import { Non, Nullable, Fn, isFn, NewableCallableClass, defineHiddenGetters } from '../internals'
+import { ScopedFlareConstructor } from './scoped-flare-constructor'
 
-export interface NewableScopedFlare<SC extends number, ST extends string> {
+export interface NewableScopedFlare <
+    SC extends number,
+    ST extends string,
+    RM = undefined,
+    RD extends object | {} = {},
+    RC extends Nullable<ErrorLike> = null
+> {
     new <
         M extends string = '',
-        D extends object = {},
-        C extends Nullable<Error> = null
-    > (cause?: C, data?: Non<Error, D>, message?: M): Flare<SC, ST, M, D, C>
-
-    new <
-        M extends string = '',
-        D extends object = {},
-        C extends Nullable<Error> = null
-    > (cause?: C, message?: M, data?: Non<Error, D>): Flare<SC, ST, M, D, C>
-
-    new <
-        M extends string = '',
-        D extends object = {},
-        C extends Nullable<Error> = null
-    > (message?: M, cause?: C, data?: Non<Error, D>): Flare<SC, ST, M, D, C>
+        D extends RD = {},
+        C extends RC = null
+    > (cause?: C, data?: Non<ErrorLike, D>, message?: M): Flare<SC, ST, M, D, C>
 
     new <
         M extends string = '',
         D extends object = {},
-        C extends Nullable<Error> = null
-    > (message?: M, data?: Non<Error, D>, cause?: C): Flare<SC, ST, M, D, C>
+        C extends Nullable<ErrorLike> = null
+    > (cause?: C, message?: M, data?: Non<ErrorLike, D>): Flare<SC, ST, M, D, C>
 
     new <
         M extends string = '',
         D extends object = {},
-        C extends Nullable<Error> = null
-    > (data?: Non<Error, D>, cause?: C, message?: M): Flare<SC, ST, M, D, C>
+        C extends Nullable<ErrorLike> = null
+    > (message?: M, cause?: C, data?: Non<ErrorLike, D>): Flare<SC, ST, M, D, C>
 
     new <
         M extends string = '',
         D extends object = {},
-        C extends Nullable<Error> = null
-    > (data?: Non<Error, D>, message?: M, cause?: C): Flare<SC, ST, M, D, C>
+        C extends Nullable<ErrorLike> = null
+    > (message?: M, data?: Non<ErrorLike, D>, cause?: C): Flare<SC, ST, M, D, C>
 
     new <
         M extends string = '',
         D extends object = {},
-        C extends Nullable<Error> = null
-    > (flareExtras: FlareExtras<M, Non<Error, D>, C>): Flare<SC, ST, M, D, C>
+        C extends Nullable<ErrorLike> = null
+    > (data?: Non<ErrorLike, D>, cause?: C, message?: M): Flare<SC, ST, M, D, C>
+
+    new <
+        M extends string = '',
+        D extends object = {},
+        C extends Nullable<ErrorLike> = null
+    > (data?: Non<ErrorLike, D>, message?: M, cause?: C): Flare<SC, ST, M, D, C>
+
+    new <
+        M extends string = '',
+        D extends object = {},
+        C extends Nullable<ErrorLike> = null
+    > (flareExtras: FlareExtras<M, Non<ErrorLike, D>, C>): Flare<SC, ST, M, D, C>
 }
 
 export interface CallableScopedFlare<SC extends number, ST extends string> {
     <
         M extends string = '',
         D extends object = {},
-        C extends Nullable<Error> = null
-    > (cause?: C, data?: Non<Error, D>, message?: M): Flare<SC, ST, M, D, C>
+        C extends Nullable<ErrorLike> = null
+    > (cause?: C, data?: Non<ErrorLike, D>, message?: M): Flare<SC, ST, M, D, C>
 
     <
         M extends string = '',
         D extends object = {},
-        C extends Nullable<Error> = null
-    > (cause?: C, message?: M, data?: Non<Error, D>): Flare<SC, ST, M, D, C>
+        C extends Nullable<ErrorLike> = null
+    > (cause?: C, message?: M, data?: Non<ErrorLike, D>): Flare<SC, ST, M, D, C>
 
     <
         M extends string = '',
         D extends object = {},
-        C extends Nullable<Error> = null
-    > (message?: M, cause?: C, data?: Non<Error, D>): Flare<SC, ST, M, D, C>
+        C extends Nullable<ErrorLike> = null
+    > (message?: M, cause?: C, data?: Non<ErrorLike, D>): Flare<SC, ST, M, D, C>
 
     <
         M extends string = '',
         D extends object = {},
-        C extends Nullable<Error> = null
-    > (message?: M, data?: Non<Error, D>, cause?: C): Flare<SC, ST, M, D, C>
+        C extends Nullable<ErrorLike> = null
+    > (message?: M, data?: Non<ErrorLike, D>, cause?: C): Flare<SC, ST, M, D, C>
 
     <
         M extends string = '',
         D extends object = {},
-        C extends Nullable<Error> = null
-    > (data?: Non<Error, D>, cause?: C, message?: M): Flare<SC, ST, M, D, C>
+        C extends Nullable<ErrorLike> = null
+    > (data?: Non<ErrorLike, D>, cause?: C, message?: M): Flare<SC, ST, M, D, C>
 
     <
         M extends string = '',
         D extends object = {},
-        C extends Nullable<Error> = null
-    > (data?: Non<Error, D>, message?: M, cause?: C): Flare<SC, ST, M, D, C>
+        C extends Nullable<ErrorLike> = null
+    > (data?: Non<ErrorLike, D>, message?: M, cause?: C): Flare<SC, ST, M, D, C>
 
     <
         M extends string = '',
         D extends object = {},
-        C extends Nullable<Error> = null
-    > (flareExtras: FlareExtras<M, Non<Error, D>, C>): Flare<SC, ST, M, D, C>
+        C extends Nullable<ErrorLike> = null
+    > (flareExtras: FlareExtras<M, Non<ErrorLike, D>, C>): Flare<SC, ST, M, D, C>
 }
 
 /**
- * Callable/Newable function
- * that has bound statusCode and statusText for producing new {@link Flare} instance
+ * todo description
+ * For simplicity there are predefined generic types
  */
 export interface ScopedFlare <
     SC extends number,
-    ST extends string
+    ST extends string,
 > extends NewableScopedFlare<SC, ST>, CallableScopedFlare<SC, ST> {
     name: string
     statusCode: SC
     statusText: ST
 }
 
-export interface ScopedFlareLike<
-    SC extends number,
-    ST extends string
-> extends Fn {
-    name?: string
-    statusCode: SC
-    statusText: ST
+/**
+ * Checks if {@param value} is instance of {@link ScopedFlare}.
+ * {@link SF} generic allows to explicitly set type guard.
+ * @see ScopedFlare
+ * @see FlareLike
+ */
+export function isScopedFlare <SF extends AnyScopedFlare = AnyScopedFlare> (
+    value: unknown
+): value is SF {
+    return isFlareLike(value)
+        && (value as any) instanceof ScopedFlare
 }
 
-/**
- * Callable/Newable function
- * that produces new {@link ScopedFlare} instance with bound {@param statusCode} and {@param statusText}
- */
-export interface ScopedFlareConstructor {
-    name: 'ScopedFlare'
-
-    isScopedFlare: typeof isScopedFlare
-
-    <SC extends number, ST extends string>(
-        statusCode: SC,
-        statusText: ST
-    ): ScopedFlare<SC, ST>
-
-    new <SC extends number, ST extends string>(
-        statusCode: SC,
-        statusText: ST
-    ): ScopedFlare<SC, ST>
-}
+export function is
 
 /**
- * Implementation of both {@link ScopedFlare} and {@link ScopedFlareConstructor} interfaces
- * @see {}
+ * Generic {@link ScopedFlare} type
+ * @see ScopedFlare
  */
-const ScopedFlareConstructor: ScopedFlareConstructor = function ScopedFlare <
-    SC extends number,
-    ST extends string
-> (statusCode: SC, statusText: ST): ScopedFlare<SC, ST> {
-    if (!new.target) {
-        return new ScopedFlareConstructor(statusCode, statusText)
-    }
+export type AnyScopedFlare = ScopedFlare<number, string>
 
-    const instance = function <
-        M extends string = '',
-        D extends object = {},
-        C extends Nullable<Error> = null
-    > (message: M, data: D, cause: C): Flare<SC, ST, M, D, C> {
-        const flare = new (Flare as any)(statusCode, statusText, message, data, cause)
+export const ScopedFlare = NewableCallableClass<ScopedFlareConstructor>(
+    defineHiddenGetters(Object.create(Function.prototype), {
+        name: function (this: AnyScopedFlare) {
+            return `${this.constructor.name}<${this.statusCode}, "${this.statusText}">`
+        }
+    }),
+    function ScopedFlare (statusCode: number, statusText: string): AnyScopedFlare {
+        const instance = function (...args: Parameters<AnyScopedFlare>): AnyFlare {
 
-        /* Recapture stacktrace to remove current function from stack */
-        Error.captureStackTrace(flare, instance as Function)
 
-        return flare
-    } as ScopedFlare<SC, ST>
+            const flare = isFlareExtras(args[0])
+                ? new Flare({ ...args[0], statusCode, statusText })
+                : new Flare(statusCode, statusText, ...args)
 
-    instance.statusCode = statusCode
-    instance.statusText = statusText
+            /* Recapture stacktrace to remove current function from stack */
+            Error.captureStackTrace(flare, instance as Function)
 
-    Object.setPrototypeOf(instance, new.target.prototype)
+            return flare
+        }
 
-    Object.defineProperties(instance, {
-        name: {
-            configurable: true,
-            enumerable: false,
-            get () {
-                return `${this.constructor.name}<${instance.statusCode}, "${instance.statusText}">`
-            }
-        },
-        constructor: {
+        instance.statusCode = statusCode
+        instance.statusText = statusText
+
+        Object.setPrototypeOf(instance, new.target.prototype)
+
+        Object.defineProperty(instance, 'constructor', {
             configurable: true,
             enumerable: false,
             value: new.target
-        }
-    })
+        })
 
-    return instance
-} as ScopedFlareConstructor
+        return instance as AnyScopedFlare
+    },
+    {
+        name: 'ScopedFlare',
+        isScopedFlare
+    }
+)
 
 
-
-
-defineStaticMethods(ScopedFlareConstructor, {
-    isScopedFlare,
-    isInfoScopedFlare,
-    isSuccessScopedFlare,
-    isRedirectScopedFlare,
-    isClientScopedFlare,
-    isServerScopedFlare,
-    isErrorScopedFlare
-})
-
-export const ScopedFlare = ScopedFlareConstructor
-
-export type AnyScopedFlare = ScopedFlare<number, string>

@@ -1,14 +1,24 @@
+export type AnyRecord = Record<any, any>
+
 export type Nullable<T> = null | T
 
-export type Nil = undefined | null
+export type NonNullable<T> = T extends null ? never : T
 
-export type Nillable<T> = Nil | T
+export type Undefinable<T> = T | undefined
+
+export type NonUndefinable<T> = T extends undefined ? never : T
+
+export type Nullish<T = undefined> = T extends undefined
+    ? (null | undefined)
+    : (T | null | undefined)
+
+export type NonNullish<T> = T extends Nullish ? never : T
+
+export type Fn<R extends any = any, A extends any[] = any[]> = (...args: A) => R
 
 export type Void<A extends any[] = any[]> = (...args: A) => void
 
 export type Predicate<A extends any[] = any[]> = (...args: A) => boolean
-
-export type Fn<I extends any = any, A extends any[] = any[]> = (...args: A) => I
 
 export type Constructor<I extends any = any, A extends any[] = any[]> = new (...args: A) => I
 
@@ -48,4 +58,10 @@ export type PickValues<T, V> = {
         : never
 }
 
-export type AnyRecord = Record<any, any>
+/**
+ * Require from T those types that are assignable to K
+ */
+export type RequireKeys<K extends keyof T, T> = {
+    [P in K]-?: T[P]
+} & T
+

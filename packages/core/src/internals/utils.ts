@@ -1,10 +1,10 @@
-import { AnyRecord, Fn, Nil, PickValues } from './types'
+import { AnyRecord, Fn, Nullish, PickValues } from './types'
 
 export const isNull = (value: unknown): value is null => value === null
 
 export const isUndefined = (value: unknown): value is undefined => typeof value === 'undefined'
 
-export const isNil = (value: unknown): value is Nil => isNull(value) || isUndefined(value)
+export const isNullish = (value: unknown): value is Nullish => isNull(value) || isUndefined(value)
 
 export const isFn = (value: unknown): value is Fn => typeof value === 'function'
 
@@ -22,7 +22,8 @@ export const isObject = (value: unknown): value is object => typeof value === 'o
 export const isRecord = <
     K extends keyof any = keyof any,
     V extends any = any
-> (value: unknown): value is Record<K, V> => (isObject(value) && !isNull(value)) || isFn(value)
+> (value: unknown): value is Record<K, V> =>
+    (isObject(value) && !isNull(value)) || isFn(value)
 
 export function defineFnName <F extends Fn> (
     fn: F,
@@ -51,7 +52,6 @@ export function defineHiddenGetters <T extends AnyRecord> (
             .map(([key, getter]) => [key, {
                 configurable: false,
                 enumerable: false,
-                writable: true,
                 get: getter
             }])
     ))

@@ -2,7 +2,7 @@ import { isScopedFlare, ScopedFlare } from '../scoped-flare'
 import { Statuses } from '../statuses'
 import { assertArgType, defineStaticMethods } from '../toolkit'
 
-export type Flares<S extends Statuses, > = {
+export type Flares<S extends Statuses,> = {
     [K in keyof S]: ScopedFlare<S[K][0], S[K][1]>
 }
 

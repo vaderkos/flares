@@ -1,4 +1,4 @@
-import { isNil, isNumber, isRecord, isString } from '../internals'
+import { isNullish, isNumber, isRecord, isString } from '../internals'
 
 /**
  * {@link Flares} can be constructed from anything that is of {@link Statuses} type
@@ -11,7 +11,7 @@ export type Statuses = {
  * Checks if {@param value} is assignable to {@link Statuses} type
  */
 export function isStatuses <S extends Statuses> (value: unknown): value is S {
-    return (isNil(value) || !isRecord(value))
+    return (isNullish(value) || !isRecord(value))
         ? false
         : Object
             .values(value)

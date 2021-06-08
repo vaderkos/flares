@@ -5,7 +5,9 @@ import { Nullable } from '../internals'
 
 import { Flare } from './flare'
 
-describe('Flare', () => {
+const TT = 'Flare'
+
+describe(TT, () => {
 
     const dummyCode = 0 as const
     const dummyText = 'Dummy text' as const
@@ -13,9 +15,14 @@ describe('Flare', () => {
     const newDummy = () => new Flare(dummyCode, dummyText)
     const callDummy = () => Flare(dummyCode, dummyText)
 
+
+
     describe('Flare()', () => {
         it('Should be callable', () => {
-            expect(callDummy()).instanceof(Flare)
+            console.log(Flare)
+            const a = callDummy()
+            console.log(a)
+            expect(a).instanceof(Flare)
         })
 
         it('Should be newable', () => {
@@ -194,38 +201,5 @@ describe('Flare', () => {
             expect(firstTraceLine.includes('Flare.')).to.be.false
             expect(firstTraceLine.includes('Given.')).to.be.false
         })
-    })
-
-    describe('Flare static methods', () => {
-        const decline = [undefined, 99999, Symbol('test'), class T {}, function T () {}, () => undefined]
-
-        const test = <A extends any[], D extends any[]>(
-            is: (value: A[keyof A]) => boolean,
-            decline: D,
-            accept: A
-        ) => {
-            const name = is.name
-            const type = is.name.replace(/^is/, '')
-
-            describe(`Flare.${name}()`, () => {
-                it(`Should be of ${type} type`, () => accept.forEach(
-                    value => expect(is(value)).to.be.true
-                ))
-                it(`Should not be of ${type} type`, () => decline.forEach(
-                    value => expect(is(value)).to.be.false
-                ))
-            })
-        }
-
-        test(Flare.isFlareMessage, decline, ['', 'text'])
-        test(Flare.isFlareCause, decline, [null, new Error(), new SyntaxError(), new (class E extends Error {})()])
-        test(Flare.isFlareData, decline, [{}, { a: 1 }, [], [1, 2, 3], new (class T {})()])
-
-        test(Flare.isFlare, decline, [
-            newDummy(),
-            callDummy(),
-            Object.create(Flare.prototype),
-            Flare.call(Object.create(Flare.prototype), dummyCode, dummyText)
-        ])
     })
 })

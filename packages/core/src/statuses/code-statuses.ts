@@ -49,7 +49,7 @@ export const CodeClientStatuses = {
     415: [415, 'Unsupported Media Type'],
     416: [416, 'Range Not Satisfiable'],
     417: [417, 'Expectation Failed'],
-    418: [418, 'I\'m a teapot'],
+    418: [418, 'R\'m a teapot'],
     421: [421, 'Misdirected Request'],
     422: [422, 'Unprocessable Entity'],
     423: [423, 'Locked'],

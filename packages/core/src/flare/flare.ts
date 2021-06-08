@@ -1,25 +1,24 @@
 import { Nullable, Non, NewableCallableClass, defineHiddenGetters } from '../internals'
-
+import { isFlareMessage, isFlareData, isFlareCause } from './flare-extras'
 import { FlareConstructor } from './flare-constructor'
-import { FlareToolkit } from './flare-toolkit'
-import { FlareExtras, isFlareMessage, isFlareData, isFlareCause } from './flare-extras'
-import { FlareLike, isFlareLike } from './flare-like'
-import { ErrorLike, isErrorLike } from './error-like'
+
+import { AnyFlareLike, FlareLike, isFlareLike } from './flare-like'
+import { ErrorLike, isErrorLike } from '../error-like'
 
 /**
- *
- * Note! Use one of provided generic types
+ * todo description
+ * For simplicity there are predefined generic types
  * @see AnyFlare
  * @see AnyDataFlare
  * @see AnyCauseFlare
  * @see AnyMessageFlare
  */
 export interface Flare <
-    SC extends number = number,
-    ST extends string = string,
-    M  extends string = '',
-    D  extends object = {},
-    C  extends Nullable<ErrorLike> = null,
+    SC extends number,
+    ST extends string,
+    M  extends string,
+    D  extends object,
+    C  extends Nullable<ErrorLike>
 > extends Error {
     name:  string
     stack: string
@@ -30,17 +29,39 @@ export interface Flare <
     cause:      C
 }
 
-export type AnyFlare = Flare<number, string, string, object, Nullable<ErrorLike>>
-
-export type AnyDataFlare<D extends object> = Flare<number, string, string, Non<ErrorLike, D>, Nullable<ErrorLike>>
-
-export type AnyCauseFlare<C extends ErrorLike> = Flare<number, string, string, Non<ErrorLike, object>, Nullable<C>>
-
-export type AnyMessageFlare<M extends string> = Flare<number, string, M, Non<ErrorLike, object>, Nullable<ErrorLike>>
+/**
+ * Generic {@link Flare} type
+ * @see Flare
+ */
+export type AnyFlare =
+    Flare<number, string, string, object, Nullable<ErrorLike>>
 
 /**
- * todo Description
- * Implementation of both {@link Flare} and {@link FlareConstructor}
+ * Generic {@link Flare} type that has strictly typed {@link Flare.message} property
+ * @see Flare
+ * @see Flare.message
+ */
+export type AnyMessageFlare<M extends string> =
+    Flare<number, string, M, Non<ErrorLike, object>, Nullable<ErrorLike>>
+
+/**
+ * Generic {@link Flare} type that has strictly typed {@link Flare.data} property
+ * @see Flare
+ * @see Flare.data
+ */
+export type AnyDataFlare<D extends object> =
+    Flare<number, string, string, Non<ErrorLike, D>, Nullable<ErrorLike>>
+
+/**
+ * Generic {@link Flare} type that has strictly typed {@link Flare.cause} property
+ * @see Flare
+ * @see Flare.cause
+ */
+export type AnyCauseFlare<C extends Nullable<ErrorLike>> =
+    Flare<number, string, string, Non<ErrorLike, object>, C>
+
+/**
+ * todo description
  * @see {Flare}
  * @see {FlareConstructor}
  */
@@ -58,16 +79,18 @@ export const Flare = NewableCallableClass<FlareConstructor>(
                 ? (Object.keys(this.data).length ? 'object' : '{}')
                 : (this.data?.constructor?.name ?? 'object')
 
-            const c = ((this.cause) instanceof Error)
+            const c = isErrorLike(this.cause)
                 ? this.cause.name
                 : 'null'
 
             return `${this.constructor.name}<${sc}, "${st}", ${m}, ${d}, ${c}>`
+        },
+        serializable: function (this: AnyFlare) {
+
         }
     }),
     function Flare (...args: Parameters<FlareConstructor>) {
-
-        const unpackArgs = () => {
+        const unpackArgs = (): AnyFlareLike => {
             if (isFlareLike(args[0])) {
                 return args[0]
             }
@@ -103,16 +126,6 @@ export const Flare = NewableCallableClass<FlareConstructor>(
         })
     },
     {
-        ...FlareToolkit,
         name: 'Flare'
     }
 )
-
-Object.defineProperty(Flare.prototype, 'name', {
-    configurable: false,
-    enumerable: false,
-    writable: true,
-
-})
-
-const a = new Flare(100, 'asda')
